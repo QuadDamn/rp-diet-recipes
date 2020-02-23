@@ -4,8 +4,19 @@ import App from "./App";
 import {Auth0Provider} from "./utils/auth0";
 import history from "./utils/history";
 
-// A function that routes the user to the right place
-// after login
+import {createStore, applyMiddleware, compose} from 'redux';
+import rootReducer from './reducers';
+import {Provider} from 'react-redux';
+import thunk from "redux-thunk";
+
+const store = createStore(
+    rootReducer,
+    compose(
+        applyMiddleware(thunk),
+        window.devToolsExtension ? window.devToolsExtension() : f => f
+    )
+);
+
 const onRedirectCallback = appState => {
     history.push(
         appState && appState.targetUrl
@@ -14,16 +25,16 @@ const onRedirectCallback = appState => {
     );
 };
 
-console.log('hello world');
-
 ReactDOM.render(
     <Auth0Provider
         domain={process.env.REACT_APP_AUTH0_DOMAIN}
         client_id={process.env.REACT_APP_AUTH0_CLIENT_ID}
-        redirect_uri={window.location.origin}
+        redirect_uri="http://localhost:3000"
         onRedirectCallback={onRedirectCallback}
     >
-        <App/>
+        <Provider store={store}>
+            <App/>
+        </Provider>
     </Auth0Provider>,
     document.getElementById("root")
 );

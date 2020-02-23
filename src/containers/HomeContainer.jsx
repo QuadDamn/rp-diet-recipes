@@ -1,6 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {getAllRecipesAction} from '../actions/recipes';
 
 const HomeContainer = () => {
+
+    const recipes = useSelector(state => state.recipes);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getAllRecipesAction())
+    }, []);
+
+    console.log(recipes);
 
     return (
 
