@@ -1,34 +1,31 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, Fragment} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {getAllRecipesAction} from '../actions/recipes';
+import {RecipeBlock} from "../components/shared/RecipeBlock";
 
 const HomeContainer = () => {
-
-    const recipes = useSelector(state => state.recipes);
+    const recipesSelector = useSelector(state => state.recipes);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getAllRecipesAction())
     }, []);
 
-    console.log(recipes);
+    if (!recipesSelector.recipes || recipesSelector.recipes.loading) {
+        return (
+            <div className="preloader">
+                <div className="spinner"/>
+            </div>
+        );
+    }
 
     return (
-
         <main className="main" role="main">
-
-
             <div className="wrap clearfix">
                 <div className="row">
-
-
-
                     <section className="content three-fourth">
-
                         <div className="cwrap">
-
                             <div className="entries row">
-
                                 <div className="featured two-third">
                                     <header className="s-title">
                                         <h2 className="ribbon">Recipe of the Day</h2>
@@ -84,9 +81,7 @@ const HomeContainer = () => {
                                         </div>
                                     </article>
                                 </div>
-
                             </div>
-
                         </div>
 
 
@@ -97,149 +92,29 @@ const HomeContainer = () => {
 
                             <div className="entries row">
 
-                                <div className="entry one-third">
-                                    <figure>
-                                        <img src="images/img.jpg" alt=""/>
-                                        <figcaption><a href="recipe.html"><i className="icon icon-themeenergy_eye2"></i>
-                                            <span>View recipe</span></a></figcaption>
-                                    </figure>
-                                    <div className="container">
-                                        <h2><a href="recipe.html">Thai fried rice with fruit and vegetables</a></h2>
-                                        <div className="actions">
-                                            <div>
-                                                <div className="difficulty"><i className="ico i-medium"></i><a
-                                                    href="#">medium</a></div>
-                                                <div className="likes"><i className="fa fa-heart"></i><a href="#">10</a>
-                                                </div>
-                                                <div className="comments"><i className="fa fa-comment"></i><a
-                                                    href="recipe.html#comments">27</a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                {recipesSelector.recipes.data.items.map((recipe) => {
+                                    return (
+                                        <Fragment key={recipe.fields.ID}>
+                                            <RecipeBlock {...recipe} />
+                                        </Fragment>
+                                    );
+                                })}
 
-                                <div className="entry one-third">
-                                    <figure>
-                                        <img src="images/img.jpg" alt=""/>
-                                        <figcaption><a href="recipe.html"><i className="icon icon-themeenergy_eye2"></i>
-                                            <span>View recipe</span></a></figcaption>
-                                    </figure>
-                                    <div className="container">
-                                        <h2><a href="recipe.html">Spicy Morroccan prawns with cherry tomatoes</a></h2>
-                                        <div className="actions">
-                                            <div>
-                                                <div className="difficulty"><i className="ico i-hard"></i><a
-                                                    href="#">hard</a></div>
-                                                <div className="likes"><i className="fa fa-heart"></i><a href="#">10</a>
-                                                </div>
-                                                <div className="comments"><i className="fa fa-comment"></i><a
-                                                    href="recipe.html#comments">27</a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div className="entry one-third">
-                                    <figure>
-                                        <img src="images/img.jpg" alt=""/>
-                                        <figcaption><a href="recipe.html"><i className="icon icon-themeenergy_eye2"></i>
-                                            <span>View recipe</span></a></figcaption>
-                                    </figure>
-                                    <div className="container">
-                                        <h2><a href="recipe.html">Super easy blueberry cheesecake</a></h2>
-                                        <div className="actions">
-                                            <div>
-                                                <div className="difficulty"><i className="ico i-easy"></i><a
-                                                    href="#">easy</a></div>
-                                                <div className="likes"><i className="fa fa-heart"></i><a href="#">10</a>
-                                                </div>
-                                                <div className="comments"><i className="fa fa-comment"></i><a
-                                                    href="recipe.html#comments">27</a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div className="entry one-third">
-                                    <figure>
-                                        <img src="images/img.jpg" alt=""/>
-                                        <figcaption><a href="recipe.html"><i className="icon icon-themeenergy_eye2"></i>
-                                            <span>View recipe</span></a></figcaption>
-                                    </figure>
-                                    <div className="container">
-                                        <h2><a href="recipe.html">Refreshing banana split with a twist for adults</a>
-                                        </h2>
-                                        <div className="actions">
-                                            <div>
-                                                <div className="difficulty"><i className="ico i-hard"></i><a
-                                                    href="#">hard</a></div>
-                                                <div className="likes"><i className="fa fa-heart"></i><a href="#">10</a>
-                                                </div>
-                                                <div className="comments"><i className="fa fa-comment"></i><a
-                                                    href="recipe.html#comments">27</a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div className="entry one-third">
-                                    <figure>
-                                        <img src="images/img.jpg" alt=""/>
-                                        <figcaption><a href="recipe.html"><i className="icon icon-themeenergy_eye2"></i>
-                                            <span>View recipe</span></a></figcaption>
-                                    </figure>
-                                    <div className="container">
-                                        <h2><a href="recipe.html">Sushi mania: this is the best sushi you have ever
-                                            tasted</a></h2>
-                                        <div className="actions">
-                                            <div>
-                                                <div className="difficulty"><i className="ico i-easy"></i><a
-                                                    href="#">easy</a></div>
-                                                <div className="likes"><i className="fa fa-heart"></i><a href="#">10</a>
-                                                </div>
-                                                <div className="comments"><i className="fa fa-comment"></i><a
-                                                    href="recipe.html#comments">27</a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="entry one-third">
-                                    <figure>
-                                        <img src="images/img.jpg" alt=""/>
-                                        <figcaption><a href="recipe.html"><i className="icon icon-themeenergy_eye2"></i>
-                                            <span>View recipe</span></a></figcaption>
-                                    </figure>
-                                    <div className="container">
-                                        <h2><a href="recipe.html">Princess puffs - an old classic at its best</a></h2>
-                                        <div className="actions">
-                                            <div>
-                                                <div className="difficulty"><i className="ico i-hard"></i><a
-                                                    href="#">hard</a></div>
-                                                <div className="likes"><i className="fa fa-heart"></i><a href="#">10</a>
-                                                </div>
-                                                <div className="comments"><i className="fa fa-comment"></i><a
-                                                    href="recipe.html#comments">27</a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
 
                                 <div className="quicklinks">
                                     <a href="#" className="button">More recipes</a>
-                                    <a href="javascript:void(0)" className="button scroll-to-top">Back to top</a>
+                                    <a href="" className="button scroll-to-top">Back to top</a>
                                 </div>
                             </div>
 
                         </div>
 
 
-
-
                     </section>
-
-
 
 
                     <aside className="sidebar one-fourth">
@@ -287,42 +162,6 @@ const HomeContainer = () => {
                                     className="icon icon-themeenergy_soup2"></i> <span>Soups</span></a></li>
                                 <li className="medium"><a href="recipes.html" title="Vegetarian"><i
                                     className="icon icon-themeenergy_plant-symbol"></i> <span>Vegetarian</span></a></li>
-                            </ul>
-                        </div>
-
-                        <div className="widget">
-                            <h3>Tips and tricks</h3>
-                            <ul className="articles_latest">
-                                <li>
-                                    <a href="blog_single.html">
-                                        <img src="images/img.jpg" alt=""/>
-                                        <h6>How to decorate cookies</h6>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="blog_single.html">
-                                        <img src="images/img.jpg" alt=""/>
-                                        <h6>Make your own bread</h6>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="blog_single.html">
-                                        <img src="images/img.jpg" alt=""/>
-                                        <h6>How to make sushi</h6>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="blog_single.html">
-                                        <img src="images/img.jpg" alt=""/>
-                                        <h6>Barbeque party</h6>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="blog_single.html">
-                                        <img src="images/img.jpg" alt=""/>
-                                        <h6>How to make a cheesecake</h6>
-                                    </a>
-                                </li>
                             </ul>
                         </div>
 
@@ -382,87 +221,75 @@ const HomeContainer = () => {
                             </ul>
                         </div>
 
-                        <div className="widget">
-                            <h3>Advertisment</h3>
-                            <a href="#"><img src="images/advertisment.jpg" alt=""/></a>
-                        </div>
+                        {/*<div className="widget">*/}
+                        {/*    <h3>Advertisment</h3>*/}
+                        {/*    <a href="#"><img src="images/advertisment.jpg" alt=""/></a>*/}
+                        {/*</div>*/}
                     </aside>
                 </div>
 
-                <div className="row">
+                {/*<div className="row">*/}
 
-                    <section className="content full-width">
-                        <div className="icons dynamic-numbers">
-                            <header className="s-title">
-                                <h2 className="ribbon large">RP Recipes Site Stats</h2>
-                            </header>
+                {/*    <section className="content full-width">*/}
+                {/*        <div className="icons dynamic-numbers">*/}
+                {/*            <header className="s-title">*/}
+                {/*                <h2 className="ribbon large">RP Recipes Site Stats</h2>*/}
+                {/*            </header>*/}
+                {/*            <div className="row">*/}
+                {/*                <div className="one-sixth">*/}
+                {/*                    <div className="container">*/}
+                {/*                        <i className="icon icon-themeenergy_chef-hat"></i>*/}
+                {/*                        <span className="title dynamic-number" data-dnumber="1730">0</span>*/}
+                {/*                        <span className="subtitle">members</span>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
 
+                {/*                <div className="one-sixth">*/}
+                {/*                    <div className="container">*/}
+                {/*                        <i className="icon icon-themeenergy_pan"></i>*/}
+                {/*                        <span className="title dynamic-number" data-dnumber="1250">0</span>*/}
+                {/*                        <span className="subtitle">recipes</span>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
 
-                            <div className="row">
+                {/*                <div className="one-sixth">*/}
+                {/*                    <div className="container">*/}
+                {/*                        <i className="icon icon-themeenergy_image"></i>*/}
+                {/*                        <span className="title dynamic-number" data-dnumber="5300">0</span>*/}
+                {/*                        <span className="subtitle">photos</span>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
 
-                                <div className="one-sixth">
-                                    <div className="container">
-                                        <i className="icon icon-themeenergy_chef-hat"></i>
-                                        <span className="title dynamic-number" data-dnumber="1730">0</span>
-                                        <span className="subtitle">members</span>
-                                    </div>
-                                </div>
+                {/*                <div className="one-sixth">*/}
+                {/*                    <div className="container">*/}
+                {/*                        <i className="icon icon-themeenergy_pencil"></i>*/}
+                {/*                        <span className="title dynamic-number" data-dnumber="2300">0</span>*/}
+                {/*                        <span className="subtitle">forum posts</span>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
 
-                                <div className="one-sixth">
-                                    <div className="container">
-                                        <i className="icon icon-themeenergy_pan"></i>
-                                        <span className="title dynamic-number" data-dnumber="1250">0</span>
-                                        <span className="subtitle">recipes</span>
-                                    </div>
-                                </div>
+                {/*                <div className="one-sixth">*/}
+                {/*                    <div className="container">*/}
+                {/*                        <i className="icon icon-themeenergy_chat-bubbles"></i>*/}
+                {/*                        <span className="title dynamic-number" data-dnumber="7400">0</span>*/}
+                {/*                        <span className="subtitle">comments</span>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
 
-                                <div className="one-sixth">
-                                    <div className="container">
-                                        <i className="icon icon-themeenergy_image"></i>
-                                        <span className="title dynamic-number" data-dnumber="5300">0</span>
-                                        <span className="subtitle">photos</span>
-                                    </div>
-                                </div>
-
-                                <div className="one-sixth">
-                                    <div className="container">
-                                        <i className="icon icon-themeenergy_pencil"></i>
-                                        <span className="title dynamic-number" data-dnumber="2300">0</span>
-                                        <span className="subtitle">forum posts</span>
-                                    </div>
-                                </div>
-
-                                <div className="one-sixth">
-                                    <div className="container">
-                                        <i className="icon icon-themeenergy_chat-bubbles"></i>
-                                        <span className="title dynamic-number" data-dnumber="7400">0</span>
-                                        <span className="subtitle">comments</span>
-                                    </div>
-                                </div>
-
-                                <div className="one-sixth">
-                                    <div className="container">
-                                        <i className="icon icon-themeenergy_stars"></i>
-                                        <span className="title dynamic-number" data-dnumber="1700">0</span>
-                                        <span className="subtitle">articles</span>
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-                        </div>
-                    </section>
-
-                </div>
-
+                {/*                <div className="one-sixth">*/}
+                {/*                    <div className="container">*/}
+                {/*                        <i className="icon icon-themeenergy_stars"></i>*/}
+                {/*                        <span className="title dynamic-number" data-dnumber="1700">0</span>*/}
+                {/*                        <span className="subtitle">articles</span>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*    </section>*/}
+                {/*</div>*/}
             </div>
-
         </main>
-
-
     )
-
 };
 
 export default HomeContainer;
