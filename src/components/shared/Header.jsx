@@ -7,7 +7,7 @@ const Header = () => {
     return (
         <header className="head" role="banner">
             <div className="wrap clearfix">
-                <a href="index.html" title="SocialChef" className="logo"><img src="images/ico/logo.png"
+                <a href="index.html" title="SocialChef" className="logo"><img src="/images/ico/logo.png"
                                                                               alt="SocialChef logo"/></a>
                 <nav className="main-nav" role="navigation" id="menu">
                     <ul>

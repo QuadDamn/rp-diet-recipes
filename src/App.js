@@ -5,6 +5,8 @@ import Header from "./components/shared/Header";
 import HomeContainer from "./containers/HomeContainer";
 import Footer from "./components/shared/Footer";
 import {useAuth0} from "./utils/auth0";
+import PrivateRoute from "./components/shared/PrivateRoute";
+import CreateRecipeContainer from "./containers/CreateRecipeContainer";
 
 function App() {
     const {loading} = useAuth0();
@@ -27,7 +29,7 @@ function App() {
                 <Route exact path="/">
                     <HomeContainer />
                 </Route>
-                {/*<Route path="/profile" component={Profile} />*/}
+                <PrivateRoute path="/recipe/new" component={CreateRecipeContainer} />
             </Switch>
 
             <Footer/>
