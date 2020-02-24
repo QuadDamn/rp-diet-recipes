@@ -1,17 +1,29 @@
 import React, {useEffect, Fragment} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {getAllRecipesAction} from '../actions/recipes';
-import {RecipeBlock} from "../components/shared/RecipeBlock";
+import {getAllRecipeCategoriesAction} from "../actions/recipeCategories";
+import RecipeBlock from "../components/shared/RecipeBlock";
+import RecipeCategoryBlock from "../components/home/RecipeCategoryBlock";
 
 const HomeContainer = () => {
     const recipesSelector = useSelector(state => state.recipes);
+    const recipeCategoriesSelector = useSelector(state => state.recipeCategories);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getAllRecipesAction())
+        dispatch(getAllRecipesAction());
+        dispatch(getAllRecipeCategoriesAction());
+
     }, []);
 
-    if (!recipesSelector.recipes || recipesSelector.recipes.loading) {
+    console.log(recipeCategoriesSelector);
+
+    if (
+        !recipesSelector.recipes ||
+        recipesSelector.recipes.loading ||
+        !recipeCategoriesSelector.recipeCategories ||
+        recipeCategoriesSelector.recipeCategories.loading
+    ) {
         return (
             <div className="preloader">
                 <div className="spinner"/>
@@ -91,7 +103,6 @@ const HomeContainer = () => {
                             </header>
 
                             <div className="entries row">
-
                                 {recipesSelector.recipes.data.items.map((recipe) => {
                                     return (
                                         <Fragment key={recipe.fields.ID}>
@@ -99,11 +110,6 @@ const HomeContainer = () => {
                                         </Fragment>
                                     );
                                 })}
-
-
-
-
-
 
                                 <div className="quicklinks">
                                     <a href="#" className="button">More recipes</a>
@@ -118,52 +124,8 @@ const HomeContainer = () => {
 
 
                     <aside className="sidebar one-fourth">
-                        <div className="widget">
-                            <h3>Recipe Categories</h3>
-                            <ul className="boxed">
-                                <li className="light"><a href="recipes.html" title="Appetizers"><i
-                                    className="icon icon-themeenergy_pasta"></i> <span>Apetizers</span></a></li>
-                                <li className="medium"><a href="recipes.html" title="Cocktails"><i
-                                    className="icon icon-themeenergy_margarita2"></i> <span>Cocktails</span></a></li>
-                                <li className="dark"><a href="recipes.html" title="Deserts"><i
-                                    className="icon icon-themeenergy_cupcake"></i> <span>Deserts</span></a></li>
 
-                                <li className="medium"><a href="recipes.html" title="Cocktails"><i
-                                    className="icon icon-themeenergy_eggs"></i> <span>Eggs</span></a></li>
-                                <li className="dark"><a href="recipes.html" title="Equipment"><i
-                                    className="icon icon-themeenergy_blender"></i> <span>Equipment</span></a></li>
-                                <li className="light"><a href="recipes.html" title="Events"><i
-                                    className="icon icon-themeenergy_turkey"></i> <span>Events</span></a></li>
-
-                                <li className="dark"><a href="recipes.html" title="Fish"><i
-                                    className="icon icon-themeenergy_fish2"></i> <span>Fish</span></a></li>
-                                <li className="light"><a href="recipes.html" title="Ftness"><i
-                                    className="icon icon-themeenergy_biceps"></i> <span>Fitness</span></a></li>
-                                <li className="medium"><a href="recipes.html" title="Healthy"><i
-                                    className="icon icon-themeenergy_apple2"></i> <span>Healthy</span></a></li>
-
-                                <li className="light"><a href="recipes.html" title="Asian"><i
-                                    className="icon icon-themeenergy_sushi"></i> <span>Asian</span></a></li>
-                                <li className="medium"><a href="recipes.html" title="Mexican"><i
-                                    className="icon icon-themeenergy_peper"></i> <span>Mexican</span></a></li>
-                                <li className="dark"><a href="recipes.html" title="Pizza"><i
-                                    className="icon  icon-themeenergy_pizza-slice"></i> <span>Pizza</span></a></li>
-
-                                <li className="medium"><a href="recipes.html" title="Kids"><i
-                                    className="icon icon-themeenergy_happy"></i> <span>Kids</span></a></li>
-                                <li className="dark"><a href="recipes.html" title="Meat"><i
-                                    className="icon icon-themeenergy_meat"></i> <span>Meat</span></a></li>
-                                <li className="light"><a href="recipes.html" title="Snacks"><i
-                                    className="icon icon-themeenergy_fried-potatoes"></i> <span>Snacks</span></a></li>
-
-                                <li className="dark"><a href="recipes.html" title="Salads"><i
-                                    className="icon icon-themeenergy_eggplant"></i> <span>Salads</span></a></li>
-                                <li className="light"><a href="recipes.html" title="Storage"><i
-                                    className="icon icon-themeenergy_soup2"></i> <span>Soups</span></a></li>
-                                <li className="medium"><a href="recipes.html" title="Vegetarian"><i
-                                    className="icon icon-themeenergy_plant-symbol"></i> <span>Vegetarian</span></a></li>
-                            </ul>
-                        </div>
+                        <RecipeCategoryBlock {...recipeCategoriesSelector.recipeCategories} />
 
                         <div className="widget members">
                             <h3>Our members</h3>

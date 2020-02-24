@@ -1,18 +1,18 @@
 import React from 'react';
 
-export const RecipeBlock = ({fields}) => {
+const RecipeBlock = ({sys, fields}) => {
     const titleForUrl = fields.title.replace(/\s+/g, '-').toLowerCase();
 
     return (
         <div className="entry one-third">
             <figure>
                 <img src={fields.mainImageLink} alt=""/>
-                <figcaption><a href={`/recipe/${fields.ID}/${titleForUrl}`}><i
+                <figcaption><a href={`/recipe/${sys.id}/${titleForUrl}`}><i
                     className="icon icon-themeenergy_eye2"></i>
                     <span>View recipe</span></a></figcaption>
             </figure>
             <div className="container">
-                <h2><a href={`/recipe/${fields.ID}/${titleForUrl}`}>{fields.title}</a></h2>
+                <h2><a href={`/recipe/${sys.id}/${titleForUrl}`}>{fields.title}</a></h2>
 
                 <p>{fields.shortDescription}</p>
 
@@ -30,3 +30,5 @@ export const RecipeBlock = ({fields}) => {
         </div>
     )
 };
+
+export default RecipeBlock;
