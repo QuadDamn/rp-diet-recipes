@@ -1,23 +1,41 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Helmet from 'react-helmet';
 import {useDispatch, useSelector} from "react-redux";
 import {getAllRecipeCategoriesAction} from "../actions/recipeCategories";
 import {isObjectEmpty} from '../utils/helpers';
+import {useFormFields, useFormFieldErrors} from '../utils/customHooks';
 
 import {
     Button,
     TextField,
-    CssBaseline,
     Grid,
-    Typography,
-    Container,
-    Avatar,
-    InputAdornment,
+    InputLabel,
+    MenuItem,
+    FormControl,
+    Select
 } from '@material-ui/core';
 
 const CreateRecipeContainer = () => {
-    const [autoPurchasePriceValue, setAutoPurchasePriceValue] = useState();
-    const [autoPurchasePriceErrorText, setAutoPurchasePriceErrorText] = useState('');
+
+    const [fields, handleFieldChange] = useFormFields({
+        recipeTitle: '',
+        recipeCategory: '',
+        recipeDescription: '',
+        recipePreparationTime: '',
+        recipeCookingTime: '',
+        recipeDifficulty: '',
+        recipeServings: '',
+    });
+
+    const [fieldErrors, handleFieldErrorChange] = useFormFieldErrors({
+        recipeTitle: '',
+        recipeCategory: '',
+        recipeDescription: '',
+        recipePreparationTime: '',
+        recipeCookingTime: '',
+        recipeDifficulty: '',
+        recipeServings: '',
+    });
 
     const [submitButtonText, setSubmitButtonText] = useState();
     const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
@@ -33,8 +51,22 @@ const CreateRecipeContainer = () => {
         }
     }, []);
 
-    return (
+    const handleFormSubmit = (event) => {
+        event.preventDefault();
 
+        console.log(fields);
+
+    };
+
+    if (!recipeCategoriesSelector.recipeCategories || recipeCategoriesSelector.recipeCategories.loading) {
+        return (
+            <div className="preloader">
+                <div className="spinner"/>
+            </div>
+        );
+    }
+
+    return (
         <main className="main" role="main">
 
             <Helmet>
@@ -43,50 +75,204 @@ const CreateRecipeContainer = () => {
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
             </Helmet>
 
-
             <div className="wrap clearfix">
-
-                <nav className="breadcrumbs">
-                    <ul>
-                        <li><a href="index.html" title="Home">Home</a></li>
-                        <li>Submit a recipe</li>
-                    </ul>
-                </nav>
-
-
-
                 <div className="row">
-                    <header className="s-title">
-                        <h1>Add a new recipe</h1>
-                    </header>
-
-
                     <section className="content full-width">
                         <div className="submit_recipe container">
-                            <form>
+                            <form onSubmit={(event) => handleFormSubmit(event)}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            variant="outlined"
+                                            margin="normal"
+                                            fullWidth
+                                            id="recipeTitle"
+                                            label="Title"
+                                            name="recipeTitle"
+                                            value={fields.recipeTitle}
+                                            onChange={handleFieldChange}
 
-                                <TextField
-                                    variant="outlined"
-                                    margin="normal"
-                                    fullWidth
-                                    id="recipe-title"
-                                    label="Recipe Title"
-                                    name="recipe-title"
-                                    value={recipeTitle}
-                                    onChange={event => setRecipeTitle(event.target.value)}
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start" />,
-                                    }}
-                                    helperText={recipeTitleErrorText}
-                                    error={!!recipeTitleErrorText}
-                                />
+                                            helperText={fieldErrors.recipeTitle}
+                                            error={!!fieldErrors.recipeTitle}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <FormControl variant="outlined" fullWidth margin="normal">
+                                            <InputLabel id="recipeCategoryLabel">
+                                                Category
+                                            </InputLabel>
+                                            <Select
+                                                labelId="recipeCategoryLabel"
+                                                id="recipeCategory"
+                                                value={fields.recipeCategory}
+                                                name="recipeCategory"
+                                                onChange={handleFieldChange}
+                                                labelWidth={65}
+                                            >
+                                                {recipeCategoriesSelector.recipeCategories.data.items.map((category, index) => {
+                                                    return <MenuItem key={index} value={category.sys.id}>{category.fields.name}</MenuItem>
+                                                })}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            multiline
+                                            rows={3}
+                                            rowsMax={6}
+                                            variant="outlined"
+                                            margin="normal"
+                                            fullWidth
+                                            id="recipeDescription"
+                                            label="Description"
+                                            name="recipeDescription"
+                                            value={fields.recipeDescription}
+                                            onChange={handleFieldChange}
+                                            helperText={fieldErrors.recipeDescription}
+                                            error={!!fieldErrors.recipeDescription}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <TextField
+                                            variant="outlined"
+                                            margin="normal"
+                                            fullWidth
+                                            id="recipePreparationTime"
+                                            label="Preparation Time"
+                                            name="recipePreparationTime"
+                                            value={fields.recipePreparationTime}
+                                            onChange={handleFieldChange}
+                                            helperText={fieldErrors.recipePreparationTime}
+                                            error={!!fieldErrors.recipePreparationTime}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <TextField
+                                            variant="outlined"
+                                            margin="normal"
+                                            fullWidth
+                                            id="recipeCookingTime"
+                                            label="Cooking Time"
+                                            name="recipeCookingTime"
+                                            value={fields.recipeCookingTime}
+                                            onChange={handleFieldChange}
+                                            helperText={fieldErrors.recipeCookingTime}
+                                            error={!!fieldErrors.recipeCookingTime}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <TextField
+                                            variant="outlined"
+                                            margin="normal"
+                                            fullWidth
+                                            id="recipeDifficulty"
+                                            label="Difficulty"
+                                            name="recipeDifficulty"
+                                            value={fields.recipeDifficulty}
+                                            onChange={handleFieldChange}
+                                            helperText={fieldErrors.recipeDifficulty}
+                                            error={!!fieldErrors.recipeDifficulty}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={3}>
+                                        <TextField
+                                            variant="outlined"
+                                            margin="normal"
+                                            fullWidth
+                                            id="recipeServings"
+                                            label="Serves How Many People?"
+                                            name="recipeServings"
+                                            value={fields.recipeServings}
+                                            onChange={handleFieldChange}
+                                            helperText={fieldErrors.recipeServings}
+                                            error={!!fieldErrors.recipeServings}
+                                        />
+                                    </Grid>
+                                </Grid>
 
-                                {/*<section>*/}
-                                {/*    */}
-                                {/*    */}
-                                {/*    */}
-                                {/*    */}
-                                {/*    <h2>Basics</h2>*/}
+                                {/*<section style={{marginTop: "25px"}}>*/}
+
+
+
+
+                                {/*    <h2>Ingredients</h2>*/}
+
+
+                                {/*    <Grid container spacing={2}>*/}
+                                {/*        <Grid item xs={7}>*/}
+                                {/*            <TextField*/}
+                                {/*                variant="outlined"*/}
+                                {/*                margin="normal"*/}
+                                {/*                fullWidth*/}
+                                {/*                id="recipe-title"*/}
+                                {/*                label="Ingredient"*/}
+                                {/*                name="recipe-title"*/}
+                                {/*                value={fields.recipeTitle}*/}
+                                {/*                onChange={handleFieldChange}*/}
+
+                                {/*                helperText={fieldErrors.recipeTitle}*/}
+                                {/*                error={!!fieldErrors.recipeTitle}*/}
+                                {/*            />*/}
+                                {/*        </Grid>*/}
+                                {/*        <Grid item xs={2}>*/}
+                                {/*            <TextField*/}
+                                {/*                variant="outlined"*/}
+                                {/*                margin="normal"*/}
+                                {/*                fullWidth*/}
+                                {/*                id="quantity"*/}
+                                {/*                label="Quantity"*/}
+                                {/*                name="quantity"*/}
+                                {/*                value={fields.recipeTitle}*/}
+                                {/*                onChange={handleFieldChange}*/}
+
+                                {/*                helperText={fieldErrors.recipeTitle}*/}
+                                {/*                error={!!fieldErrors.recipeTitle}*/}
+                                {/*            />*/}
+                                {/*        </Grid>*/}
+                                {/*        <Grid item xs={2}>*/}
+                                {/*            <FormControl variant="outlined" fullWidth margin="normal">*/}
+                                {/*                <InputLabel id="recipeCategoryLabel">*/}
+                                {/*                    Unit of Measure*/}
+                                {/*                </InputLabel>*/}
+                                {/*                <Select*/}
+                                {/*                    labelId="recipeCategoryLabel"*/}
+                                {/*                    id="recipeCategoryLabel"*/}
+                                {/*                    value={fields.recipeCategory}*/}
+                                {/*                    onChange={handleFieldChange}*/}
+                                {/*                    labelWidth="65"*/}
+                                {/*                >*/}
+
+                                {/*                    {recipeCategoriesSelector.recipeCategories.data.items.map((category, index) => {*/}
+                                {/*                        return <MenuItem key={index} value={category.sys.id}>{category.fields.name}</MenuItem>*/}
+                                {/*                    })}*/}
+                                {/*                </Select>*/}
+                                {/*            </FormControl>*/}
+                                {/*        </Grid>*/}
+                                {/*        <Grid item xs={1}>*/}
+                                {/*            <button className="remove">-</button>*/}
+                                {/*        </Grid>*/}
+                                {/*    </Grid>*/}
+
+
+
+
+                                    {/*<div className="f-row ingredient">*/}
+                                    {/*    <div className="large"><input type="text" placeholder="Ingredient"/></div>*/}
+                                    {/*    <div className="small"><input type="text" placeholder="Quantity"/></div>*/}
+                                    {/*    <div className="third"><select>*/}
+                                    {/*        <option selected="selected">Select a category</option>*/}
+                                    {/*    </select></div>*/}
+
+                                    {/*</div>*/}
+                                    {/*<div className="f-row full">*/}
+                                    {/*    <button className="add">Add an ingredient</button>*/}
+                                    {/*</div>*/}
+
+
+                                {/*</section>*/}
+
+
+
                                 {/*    <p>All fields are required.</p>*/}
                                 {/*    <div className="f-row">*/}
                                 {/*        <div className="full"><input type="text" placeholder="Recipe title"/></div>*/}
@@ -113,18 +299,7 @@ const CreateRecipeContainer = () => {
                                 {/*</section>*/}
 
                                 {/*<section>*/}
-                                {/*    <h2>Ingredients</h2>*/}
-                                {/*    <div className="f-row ingredient">*/}
-                                {/*        <div className="large"><input type="text" placeholder="Ingredient"/></div>*/}
-                                {/*        <div className="small"><input type="text" placeholder="Quantity"/></div>*/}
-                                {/*        <div className="third"><select>*/}
-                                {/*            <option selected="selected">Select a category</option>*/}
-                                {/*        </select></div>*/}
-                                {/*        <button className="remove">-</button>*/}
-                                {/*    </div>*/}
-                                {/*    <div className="f-row full">*/}
-                                {/*        <button className="add">Add an ingredient</button>*/}
-                                {/*    </div>*/}
+
                                 {/*</section>*/}
 
                                 {/*<section>*/}
@@ -158,23 +333,28 @@ const CreateRecipeContainer = () => {
                                 {/*    </div>*/}
                                 {/*</section>*/}
 
-                                {/*<div className="f-row full">*/}
-                                {/*    <input type="submit" className="button" id="submitRecipe"*/}
-                                {/*           value="Publish this recipe"/>*/}
-                                {/*</div>*/}
+                                <div className="f-row full">
+
+                                    <Button
+                                        type="submit"
+                                        fullWidth
+                                        variant="contained"
+                                        color="primary"
+                                        className="button"
+                                        disabled={submitButtonDisabled}
+                                    >
+                                        {submitButtonText ? submitButtonText : 'Submit Recipe'}
+                                    </Button>
+
+
+                                </div>
                             </form>
                         </div>
                     </section>
-
                 </div>
-
             </div>
-
         </main>
-
-
     )
-
 };
 
 export default CreateRecipeContainer;

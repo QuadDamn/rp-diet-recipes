@@ -7,9 +7,12 @@ const useFormFields = (initialState) => {
     return [
         fields,
         (event) => {
+
+            console.log(event);
+
             setValues({
                 ...fields,
-                [event.target.id]: event.target.value
+                [event.target.name]: event.target.value
             });
         }
     ];
@@ -18,17 +21,15 @@ const useFormFields = (initialState) => {
 const useFormFieldErrors = (initialState) => {
     const [fieldErrors, setErrorValues] = useState(initialState);
 
-
-
-    // return [
-    //     fields,
-    //     function(event) {
-    //         setErrorValues({
-    //             ...fieldErrors,
-    //             [event.target.id]: event.target.value
-    //         });
-    //     }
-    // ];
+    return [
+        fieldErrors,
+        (fieldName, value) => {
+            setErrorValues({
+               ...fieldErrors,
+               [fieldName]: value
+            });
+        }
+    ]
 };
 
 export {

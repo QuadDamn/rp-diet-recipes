@@ -13,17 +13,9 @@ const HomeContainer = () => {
     useEffect(() => {
         dispatch(getAllRecipesAction());
         dispatch(getAllRecipeCategoriesAction());
-
     }, []);
 
-    console.log(recipeCategoriesSelector);
-
-    if (
-        !recipesSelector.recipes ||
-        recipesSelector.recipes.loading ||
-        !recipeCategoriesSelector.recipeCategories ||
-        recipeCategoriesSelector.recipeCategories.loading
-    ) {
+    if (!recipesSelector.recipes || recipesSelector.recipes.loading || !recipeCategoriesSelector.recipeCategories || recipeCategoriesSelector.recipeCategories.loading) {
         return (
             <div className="preloader">
                 <div className="spinner"/>
