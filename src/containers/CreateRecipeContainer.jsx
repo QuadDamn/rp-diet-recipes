@@ -4,6 +4,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {getAllRecipeCategoriesAction} from "../actions/recipeCategories";
 import {isObjectEmpty} from '../utils/helpers';
 import {useFormFields, useFormFieldErrors} from '../utils/customHooks';
+import IngredientList from '../components/createRecipe/IngredientList';
+import TextFieldInput from '../components/createRecipe/TextFieldInput';
 
 import {
     Button,
@@ -67,6 +69,23 @@ const CreateRecipeContainer = () => {
         }
     }, []);
 
+
+
+    const handleFormSubmit = (event) => {
+        event.preventDefault();
+
+        console.log(fields);
+
+    };
+
+    if (!recipeCategoriesSelector.recipeCategories || recipeCategoriesSelector.recipeCategories.loading) {
+        return (
+            <div className="preloader">
+                <div className="spinner"/>
+            </div>
+        );
+    }
+
     const handleIngredientInputChange = (event, inputField, index) => {
         let arrayCopy = [...ingredientsList];
         arrayCopy[index][inputField] = event.target.value;
@@ -89,29 +108,13 @@ const CreateRecipeContainer = () => {
         setIngredientList(arrayCopy);
     };
 
-    const handleFormSubmit = (event) => {
-        event.preventDefault();
-
-        console.log(fields);
-
-    };
-
-    if (!recipeCategoriesSelector.recipeCategories || recipeCategoriesSelector.recipeCategories.loading) {
-        return (
-            <div className="preloader">
-                <div className="spinner"/>
-            </div>
-        );
-    }
-
     console.log(ingredientsList);
 
     return (
         <main className="main" role="main">
-
             <Helmet>
                 <title>Create New Recipe | RP Recipes</title>
-                <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+                {/*<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />*/}
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
             </Helmet>
 
@@ -121,21 +124,16 @@ const CreateRecipeContainer = () => {
                         <div className="submit_recipe container">
                             <form onSubmit={(event) => handleFormSubmit(event)}>
                                 <Grid container spacing={2}>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                            variant="outlined"
-                                            margin="normal"
-                                            fullWidth
-                                            id="title"
-                                            label="Title"
-                                            name="title"
-                                            value={fields.title}
-                                            onChange={handleFieldChange}
+                                    <TextFieldInput
+                                        gridItemSize={6}
+                                        fieldName="title"
+                                        fieldLabel="Title"
+                                        fieldValue={fields.title}
+                                        handleFieldChange={handleFieldChange}
+                                        fieldError={fieldErrors.title}
+                                        isMultiLine={false}
+                                    />
 
-                                            helperText={fieldErrors.title}
-                                            error={!!fieldErrors.title}
-                                        />
-                                    </Grid>
                                     <Grid item xs={6}>
                                         <FormControl variant="outlined" fullWidth margin="normal">
                                             <InputLabel id="recipeCategoryLabel">
@@ -155,171 +153,64 @@ const CreateRecipeContainer = () => {
                                             </Select>
                                         </FormControl>
                                     </Grid>
-                                    <Grid item xs={12}>
-                                        <TextField
-                                            multiline
-                                            rows={3}
-                                            rowsMax={6}
-                                            variant="outlined"
-                                            margin="normal"
-                                            fullWidth
-                                            id="shortDescription"
-                                            label="Description"
-                                            name="shortDescription"
-                                            value={fields.shortDescription}
-                                            onChange={handleFieldChange}
-                                            helperText={fieldErrors.shortDescription}
-                                            error={!!fieldErrors.shortDescription}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={3}>
-                                        <TextField
-                                            variant="outlined"
-                                            margin="normal"
-                                            fullWidth
-                                            id="preparationTime"
-                                            label="Preparation Time"
-                                            name="preparationTime"
-                                            value={fields.preparationTime}
-                                            onChange={handleFieldChange}
-                                            helperText={fieldErrors.preparationTime}
-                                            error={!!fieldErrors.preparationTime}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={3}>
-                                        <TextField
-                                            variant="outlined"
-                                            margin="normal"
-                                            fullWidth
-                                            id="cookingTime"
-                                            label="Cooking Time"
-                                            name="cookingTime"
-                                            value={fields.cookingTime}
-                                            onChange={handleFieldChange}
-                                            helperText={fieldErrors.cookingTime}
-                                            error={!!fieldErrors.cookingTime}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={3}>
-                                        <TextField
-                                            variant="outlined"
-                                            margin="normal"
-                                            fullWidth
-                                            id="difficulty"
-                                            label="Difficulty"
-                                            name="difficulty"
-                                            value={fields.difficulty}
-                                            onChange={handleFieldChange}
-                                            helperText={fieldErrors.difficulty}
-                                            error={!!fieldErrors.difficulty}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={3}>
-                                        <TextField
-                                            variant="outlined"
-                                            margin="normal"
-                                            fullWidth
-                                            id="serves"
-                                            label="Serves How Many People?"
-                                            name="serves"
-                                            value={fields.serves}
-                                            onChange={handleFieldChange}
-                                            helperText={fieldErrors.serves}
-                                            error={!!fieldErrors.serves}
-                                        />
-                                    </Grid>
+
+                                    <TextFieldInput
+                                        gridItemSize={12}
+                                        fieldName="shortDescription"
+                                        fieldLabel="Description"
+                                        fieldValue={fields.shortDescription}
+                                        handleFieldChange={handleFieldChange}
+                                        fieldError={fieldErrors.shortDescription}
+                                        isMultiLine={true}
+                                    />
+
+                                    <TextFieldInput
+                                        gridItemSize={3}
+                                        fieldName="preparationTime"
+                                        fieldLabel="Preparation Time"
+                                        fieldValue={fields.preparationTime}
+                                        handleFieldChange={handleFieldChange}
+                                        fieldError={fieldErrors.preparationTime}
+                                        isMultiLine={false}
+                                    />
+
+                                    <TextFieldInput
+                                        gridItemSize={3}
+                                        fieldName="cookingTime"
+                                        fieldLabel="Cooking Time"
+                                        fieldValue={fields.cookingTime}
+                                        handleFieldChange={handleFieldChange}
+                                        fieldError={fieldErrors.cookingTime}
+                                        isMultiLine={false}
+                                    />
+
+                                    <TextFieldInput
+                                        gridItemSize={3}
+                                        fieldName="difficulty"
+                                        fieldLabel="Difficulty"
+                                        fieldValue={fields.difficulty}
+                                        handleFieldChange={handleFieldChange}
+                                        fieldError={fieldErrors.difficulty}
+                                        isMultiLine={false}
+                                    />
+
+                                    <TextFieldInput
+                                        gridItemSize={3}
+                                        fieldName="serves"
+                                        fieldLabel="Serves How Many People?"
+                                        fieldValue={fields.serves}
+                                        handleFieldChange={handleFieldChange}
+                                        fieldError={fieldErrors.serves}
+                                        isMultiLine={false}
+                                    />
                                 </Grid>
 
-                                <section style={{marginTop: "25px"}}>
-
-                                    <h2>Ingredients</h2>
-
-                                    {ingredientsList.map((ingredient, index) => {
-                                        return (
-                                        <Grid container spacing={2} key={index}>
-                                            <Grid item xs={7}>
-                                                <TextField
-                                                    variant="outlined"
-                                                    margin="normal"
-                                                    fullWidth
-                                                    id={`ingredientName${index}`}
-                                                    label="Ingredient"
-                                                    name={`ingredientName${index}`}
-                                                    value={ingredient.name}
-                                                    onChange={(event) => handleIngredientInputChange(event, 'name', index)}
-                                                    // helperText={fieldErrors.ingredientList[index].name}
-                                                    // error={!!fieldErrors.ingredientList[index].name}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={2}>
-                                                <TextField
-                                                    variant="outlined"
-                                                    margin="normal"
-                                                    fullWidth
-                                                    id={`ingredientQuantity${index}`}
-                                                    label="Quantity"
-                                                    name={`ingredientQuantity${index}`}
-                                                    value={ingredient.quantity}
-                                                    onChange={(event) => handleIngredientInputChange(event, 'quantity', index)}
-                                                    // helperText={fieldErrors.ingredientList[index].quantity}
-                                                    // error={!!fieldErrors.ingredientList[index].quantity}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={2}>
-                                                <FormControl variant="outlined" fullWidth margin="normal">
-                                                    <InputLabel id="recipeCategoryLabel">
-                                                        Unit of Measure
-                                                    </InputLabel>
-                                                    <Select
-                                                        labelId="unitOfMeasureLabel"
-                                                        id={`ingredientUnitOfMeasure${index}`}
-                                                        name={`ingredientUnitOfMeasure${index}`}
-                                                        value={ingredient.unitOfMeasure}
-                                                        onChange={(event) => handleIngredientInputChange(event, 'unitOfMeasure', index)}
-                                                        labelWidth={115}
-                                                    >
-                                                        <MenuItem value="c">Cup</MenuItem>
-                                                        <MenuItem value="fl oz">Fluid Ounce</MenuItem>
-                                                        <MenuItem value="gal">Gallon</MenuItem>
-                                                        <MenuItem value="g">Gram</MenuItem>
-                                                        <MenuItem value="kg">Kilogram</MenuItem>
-                                                        <MenuItem value="l">Liter</MenuItem>
-                                                        <MenuItem value="mg">Milligram</MenuItem>
-                                                        <MenuItem value="ml">Milliliter</MenuItem>
-                                                        <MenuItem value="oz">Ounce</MenuItem>
-                                                        <MenuItem value="pt">Pint</MenuItem>
-                                                        <MenuItem value="lb">Pound</MenuItem>
-                                                        <MenuItem value="qt">Quart</MenuItem>
-                                                        <MenuItem value="tbsp">Tablespoon</MenuItem>
-                                                        <MenuItem value="tsp">Teaspoon</MenuItem>
-                                                    </Select>
-                                                </FormControl>
-                                            </Grid>
-                                            { index !== 0 ?
-                                                <Grid item xs={1}>
-                                                    <button onClick={(event) => handleRemoveIngredientRow(event, index)} className="remove">-</button>
-                                                </Grid> :
-                                                <Grid item xs={1} />
-                                            }
-                                        </Grid>
-                                        );
-                                    })}
-
-                                    <Grid item xs={12}>
-                                        <Button
-                                            type="button"
-                                            fullWidth
-                                            variant="contained"
-                                            color="primary"
-                                            className="button"
-                                            onClick={(event) => handleAddIngredientRow(event)}
-                                        >
-                                            Add Ingredient
-                                        </Button>
-                                    </Grid>
-                                </section>
-
-
+                                <IngredientList
+                                    ingredientsList={ingredientsList}
+                                    handleIngredientInputChange={handleIngredientInputChange}
+                                    handleAddIngredientRow={handleAddIngredientRow}
+                                    handleRemoveIngredientRow={handleRemoveIngredientRow}
+                                />
 
                                 {/*    <p>All fields are required.</p>*/}
                                 {/*    <div className="f-row">*/}
