@@ -18,23 +18,39 @@ import {
 const CreateRecipeContainer = () => {
 
     const [fields, handleFieldChange] = useFormFields({
-        recipeTitle: '',
-        recipeCategory: '',
-        recipeDescription: '',
-        recipePreparationTime: '',
-        recipeCookingTime: '',
-        recipeDifficulty: '',
-        recipeServings: '',
+        title: '',
+        category: '',
+        shortDescription: '',
+        preparationTime: '',
+        cookingTime: '',
+        difficulty: '',
+        serves: '',
+        mainImageLink: ''
     });
 
+    const [ingredientsList, setIngredientList] = useState(
+        [{
+            name: '',
+            quantity: '',
+            unitOfMeasure: ''
+        }]
+    );
+
+    const [preparationInstructions, setPreparationInstructions] = useState(
+        [
+            ''
+        ]
+    );
+
     const [fieldErrors, handleFieldErrorChange] = useFormFieldErrors({
-        recipeTitle: '',
-        recipeCategory: '',
-        recipeDescription: '',
-        recipePreparationTime: '',
-        recipeCookingTime: '',
-        recipeDifficulty: '',
-        recipeServings: '',
+        title: '',
+        category: '',
+        shortDescription: '',
+        preparationTime: '',
+        cookingTime: '',
+        difficulty: '',
+        serves: '',
+        mainImageLink: ''
     });
 
     const [submitButtonText, setSubmitButtonText] = useState();
@@ -51,6 +67,28 @@ const CreateRecipeContainer = () => {
         }
     }, []);
 
+    const handleIngredientInputChange = (event, inputField, index) => {
+        let arrayCopy = [...ingredientsList];
+        arrayCopy[index][inputField] = event.target.value;
+        setIngredientList(arrayCopy);
+    };
+
+    const handleAddIngredientRow = (event) => {
+        let arrayCopy = [...ingredientsList];
+        arrayCopy.push({
+            name: '',
+            quantity: '',
+            unitOfMeasure: ''
+        });
+        setIngredientList(arrayCopy);
+    };
+
+    const handleRemoveIngredientRow = (event, index) => {
+        const arrayCopy = [...ingredientsList];
+        arrayCopy.splice(index, 1);
+        setIngredientList(arrayCopy);
+    };
+
     const handleFormSubmit = (event) => {
         event.preventDefault();
 
@@ -65,6 +103,8 @@ const CreateRecipeContainer = () => {
             </div>
         );
     }
+
+    console.log(ingredientsList);
 
     return (
         <main className="main" role="main">
@@ -86,14 +126,14 @@ const CreateRecipeContainer = () => {
                                             variant="outlined"
                                             margin="normal"
                                             fullWidth
-                                            id="recipeTitle"
+                                            id="title"
                                             label="Title"
-                                            name="recipeTitle"
-                                            value={fields.recipeTitle}
+                                            name="title"
+                                            value={fields.title}
                                             onChange={handleFieldChange}
 
-                                            helperText={fieldErrors.recipeTitle}
-                                            error={!!fieldErrors.recipeTitle}
+                                            helperText={fieldErrors.title}
+                                            error={!!fieldErrors.title}
                                         />
                                     </Grid>
                                     <Grid item xs={6}>
@@ -103,9 +143,9 @@ const CreateRecipeContainer = () => {
                                             </InputLabel>
                                             <Select
                                                 labelId="recipeCategoryLabel"
-                                                id="recipeCategory"
-                                                value={fields.recipeCategory}
-                                                name="recipeCategory"
+                                                id="category"
+                                                value={fields.category}
+                                                name="category"
                                                 onChange={handleFieldChange}
                                                 labelWidth={65}
                                             >
@@ -123,13 +163,13 @@ const CreateRecipeContainer = () => {
                                             variant="outlined"
                                             margin="normal"
                                             fullWidth
-                                            id="recipeDescription"
+                                            id="shortDescription"
                                             label="Description"
-                                            name="recipeDescription"
-                                            value={fields.recipeDescription}
+                                            name="shortDescription"
+                                            value={fields.shortDescription}
                                             onChange={handleFieldChange}
-                                            helperText={fieldErrors.recipeDescription}
-                                            error={!!fieldErrors.recipeDescription}
+                                            helperText={fieldErrors.shortDescription}
+                                            error={!!fieldErrors.shortDescription}
                                         />
                                     </Grid>
                                     <Grid item xs={3}>
@@ -137,13 +177,13 @@ const CreateRecipeContainer = () => {
                                             variant="outlined"
                                             margin="normal"
                                             fullWidth
-                                            id="recipePreparationTime"
+                                            id="preparationTime"
                                             label="Preparation Time"
-                                            name="recipePreparationTime"
-                                            value={fields.recipePreparationTime}
+                                            name="preparationTime"
+                                            value={fields.preparationTime}
                                             onChange={handleFieldChange}
-                                            helperText={fieldErrors.recipePreparationTime}
-                                            error={!!fieldErrors.recipePreparationTime}
+                                            helperText={fieldErrors.preparationTime}
+                                            error={!!fieldErrors.preparationTime}
                                         />
                                     </Grid>
                                     <Grid item xs={3}>
@@ -151,13 +191,13 @@ const CreateRecipeContainer = () => {
                                             variant="outlined"
                                             margin="normal"
                                             fullWidth
-                                            id="recipeCookingTime"
+                                            id="cookingTime"
                                             label="Cooking Time"
-                                            name="recipeCookingTime"
-                                            value={fields.recipeCookingTime}
+                                            name="cookingTime"
+                                            value={fields.cookingTime}
                                             onChange={handleFieldChange}
-                                            helperText={fieldErrors.recipeCookingTime}
-                                            error={!!fieldErrors.recipeCookingTime}
+                                            helperText={fieldErrors.cookingTime}
+                                            error={!!fieldErrors.cookingTime}
                                         />
                                     </Grid>
                                     <Grid item xs={3}>
@@ -165,13 +205,13 @@ const CreateRecipeContainer = () => {
                                             variant="outlined"
                                             margin="normal"
                                             fullWidth
-                                            id="recipeDifficulty"
+                                            id="difficulty"
                                             label="Difficulty"
-                                            name="recipeDifficulty"
-                                            value={fields.recipeDifficulty}
+                                            name="difficulty"
+                                            value={fields.difficulty}
                                             onChange={handleFieldChange}
-                                            helperText={fieldErrors.recipeDifficulty}
-                                            error={!!fieldErrors.recipeDifficulty}
+                                            helperText={fieldErrors.difficulty}
+                                            error={!!fieldErrors.difficulty}
                                         />
                                     </Grid>
                                     <Grid item xs={3}>
@@ -179,97 +219,105 @@ const CreateRecipeContainer = () => {
                                             variant="outlined"
                                             margin="normal"
                                             fullWidth
-                                            id="recipeServings"
+                                            id="serves"
                                             label="Serves How Many People?"
-                                            name="recipeServings"
-                                            value={fields.recipeServings}
+                                            name="serves"
+                                            value={fields.serves}
                                             onChange={handleFieldChange}
-                                            helperText={fieldErrors.recipeServings}
-                                            error={!!fieldErrors.recipeServings}
+                                            helperText={fieldErrors.serves}
+                                            error={!!fieldErrors.serves}
                                         />
                                     </Grid>
                                 </Grid>
 
-                                {/*<section style={{marginTop: "25px"}}>*/}
+                                <section style={{marginTop: "25px"}}>
 
+                                    <h2>Ingredients</h2>
 
+                                    {ingredientsList.map((ingredient, index) => {
+                                        return (
+                                        <Grid container spacing={2} key={index}>
+                                            <Grid item xs={7}>
+                                                <TextField
+                                                    variant="outlined"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    id={`ingredientName${index}`}
+                                                    label="Ingredient"
+                                                    name={`ingredientName${index}`}
+                                                    value={ingredient.name}
+                                                    onChange={(event) => handleIngredientInputChange(event, 'name', index)}
+                                                    // helperText={fieldErrors.ingredientList[index].name}
+                                                    // error={!!fieldErrors.ingredientList[index].name}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                <TextField
+                                                    variant="outlined"
+                                                    margin="normal"
+                                                    fullWidth
+                                                    id={`ingredientQuantity${index}`}
+                                                    label="Quantity"
+                                                    name={`ingredientQuantity${index}`}
+                                                    value={ingredient.quantity}
+                                                    onChange={(event) => handleIngredientInputChange(event, 'quantity', index)}
+                                                    // helperText={fieldErrors.ingredientList[index].quantity}
+                                                    // error={!!fieldErrors.ingredientList[index].quantity}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                <FormControl variant="outlined" fullWidth margin="normal">
+                                                    <InputLabel id="recipeCategoryLabel">
+                                                        Unit of Measure
+                                                    </InputLabel>
+                                                    <Select
+                                                        labelId="unitOfMeasureLabel"
+                                                        id={`ingredientUnitOfMeasure${index}`}
+                                                        name={`ingredientUnitOfMeasure${index}`}
+                                                        value={ingredient.unitOfMeasure}
+                                                        onChange={(event) => handleIngredientInputChange(event, 'unitOfMeasure', index)}
+                                                        labelWidth={115}
+                                                    >
+                                                        <MenuItem value="c">Cup</MenuItem>
+                                                        <MenuItem value="fl oz">Fluid Ounce</MenuItem>
+                                                        <MenuItem value="gal">Gallon</MenuItem>
+                                                        <MenuItem value="g">Gram</MenuItem>
+                                                        <MenuItem value="kg">Kilogram</MenuItem>
+                                                        <MenuItem value="l">Liter</MenuItem>
+                                                        <MenuItem value="mg">Milligram</MenuItem>
+                                                        <MenuItem value="ml">Milliliter</MenuItem>
+                                                        <MenuItem value="oz">Ounce</MenuItem>
+                                                        <MenuItem value="pt">Pint</MenuItem>
+                                                        <MenuItem value="lb">Pound</MenuItem>
+                                                        <MenuItem value="qt">Quart</MenuItem>
+                                                        <MenuItem value="tbsp">Tablespoon</MenuItem>
+                                                        <MenuItem value="tsp">Teaspoon</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
+                                            { index !== 0 ?
+                                                <Grid item xs={1}>
+                                                    <button onClick={(event) => handleRemoveIngredientRow(event, index)} className="remove">-</button>
+                                                </Grid> :
+                                                <Grid item xs={1} />
+                                            }
+                                        </Grid>
+                                        );
+                                    })}
 
-
-                                {/*    <h2>Ingredients</h2>*/}
-
-
-                                {/*    <Grid container spacing={2}>*/}
-                                {/*        <Grid item xs={7}>*/}
-                                {/*            <TextField*/}
-                                {/*                variant="outlined"*/}
-                                {/*                margin="normal"*/}
-                                {/*                fullWidth*/}
-                                {/*                id="recipe-title"*/}
-                                {/*                label="Ingredient"*/}
-                                {/*                name="recipe-title"*/}
-                                {/*                value={fields.recipeTitle}*/}
-                                {/*                onChange={handleFieldChange}*/}
-
-                                {/*                helperText={fieldErrors.recipeTitle}*/}
-                                {/*                error={!!fieldErrors.recipeTitle}*/}
-                                {/*            />*/}
-                                {/*        </Grid>*/}
-                                {/*        <Grid item xs={2}>*/}
-                                {/*            <TextField*/}
-                                {/*                variant="outlined"*/}
-                                {/*                margin="normal"*/}
-                                {/*                fullWidth*/}
-                                {/*                id="quantity"*/}
-                                {/*                label="Quantity"*/}
-                                {/*                name="quantity"*/}
-                                {/*                value={fields.recipeTitle}*/}
-                                {/*                onChange={handleFieldChange}*/}
-
-                                {/*                helperText={fieldErrors.recipeTitle}*/}
-                                {/*                error={!!fieldErrors.recipeTitle}*/}
-                                {/*            />*/}
-                                {/*        </Grid>*/}
-                                {/*        <Grid item xs={2}>*/}
-                                {/*            <FormControl variant="outlined" fullWidth margin="normal">*/}
-                                {/*                <InputLabel id="recipeCategoryLabel">*/}
-                                {/*                    Unit of Measure*/}
-                                {/*                </InputLabel>*/}
-                                {/*                <Select*/}
-                                {/*                    labelId="recipeCategoryLabel"*/}
-                                {/*                    id="recipeCategoryLabel"*/}
-                                {/*                    value={fields.recipeCategory}*/}
-                                {/*                    onChange={handleFieldChange}*/}
-                                {/*                    labelWidth="65"*/}
-                                {/*                >*/}
-
-                                {/*                    {recipeCategoriesSelector.recipeCategories.data.items.map((category, index) => {*/}
-                                {/*                        return <MenuItem key={index} value={category.sys.id}>{category.fields.name}</MenuItem>*/}
-                                {/*                    })}*/}
-                                {/*                </Select>*/}
-                                {/*            </FormControl>*/}
-                                {/*        </Grid>*/}
-                                {/*        <Grid item xs={1}>*/}
-                                {/*            <button className="remove">-</button>*/}
-                                {/*        </Grid>*/}
-                                {/*    </Grid>*/}
-
-
-
-
-                                    {/*<div className="f-row ingredient">*/}
-                                    {/*    <div className="large"><input type="text" placeholder="Ingredient"/></div>*/}
-                                    {/*    <div className="small"><input type="text" placeholder="Quantity"/></div>*/}
-                                    {/*    <div className="third"><select>*/}
-                                    {/*        <option selected="selected">Select a category</option>*/}
-                                    {/*    </select></div>*/}
-
-                                    {/*</div>*/}
-                                    {/*<div className="f-row full">*/}
-                                    {/*    <button className="add">Add an ingredient</button>*/}
-                                    {/*</div>*/}
-
-
-                                {/*</section>*/}
+                                    <Grid item xs={12}>
+                                        <Button
+                                            type="button"
+                                            fullWidth
+                                            variant="contained"
+                                            color="primary"
+                                            className="button"
+                                            onClick={(event) => handleAddIngredientRow(event)}
+                                        >
+                                            Add Ingredient
+                                        </Button>
+                                    </Grid>
+                                </section>
 
 
 
@@ -334,7 +382,6 @@ const CreateRecipeContainer = () => {
                                 {/*</section>*/}
 
                                 <div className="f-row full">
-
                                     <Button
                                         type="submit"
                                         fullWidth
@@ -345,8 +392,6 @@ const CreateRecipeContainer = () => {
                                     >
                                         {submitButtonText ? submitButtonText : 'Submit Recipe'}
                                     </Button>
-
-
                                 </div>
                             </form>
                         </div>

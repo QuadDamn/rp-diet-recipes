@@ -60,8 +60,8 @@ strong 		{font-weight:700;}
 em 			{font-weight:700;font-style:normal;color:#FF7A73;}
 
 ul 				{margin:0 0 20px;}
-ul > li	  		{list-style:none;position:relative;padding:0 0 10px 15px;}
-ul > li:before 	{content:"\2022";font-size:30px;color:#DBBC94;position:absolute;top:-10px;left:0;}
+/*ul > li	  		{list-style:none;position:relative;padding:0 0 10px 15px;}*/
+/*ul > li:before 	{content:"\2022";font-size:30px;color:#DBBC94;position:absolute;top:-10px;left:0;}*/
 ul ul 				{margin:10px 0 -10px 2px;}
 ul ul li:before		{content:"\00af";font-size:25px;top:0;left:-2px;}
 ol			{margin:0 0 20px 25px;}
@@ -395,7 +395,7 @@ dl 			{display:inline-block;width:100%;margin:0 0 22px;}
 .submit_recipe .ingredient > div 				{padding-right:20px;float:left;}
 .submit_recipe .large					 	{width:50%;}
 .submit_recipe .small					 	{width:11.7%;}
-.submit_recipe .remove						{float:right;font-size:37px;padding:0;width:37px;height:37px;line-height:37px;}
+.submit_recipe .remove						{margin-top: 25px;font-size:37px;padding:0;width:37px;height:37px;line-height:37px;}
 .submit_recipe .instruction .full			{width:95%;}
 .submit_recipe h2		{padding:0 0 18px;}
 .submit_recipe h2 span 	{font-size:13px;font-weight:400;display:inline-block;}
@@ -525,7 +525,7 @@ dl 			{display:inline-block;width:100%;margin:0 0 22px;}
 /*label 							{display:inline-block;cursor: pointer;color:#666;position:relative;}*/
 /*input,textarea 						{outline: none;}*/
 /*button, input, select, textarea 		{font-family:'Raleway',Arial,Helvetica,sans-serif;margin: 0; vertical-align: baseline; *vertical-align: middle;outline:none;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none; -webkit-transition:all 0.2s ease-in;-moz-transition:all 0.2s ease-in;-o-transition:all 0.2s ease-in;-ms-transition:all 0.2s ease-in;transition:all 0.2s ease-in;}*/
-/*button, input[type="button"], input[type="reset"], input[type="submit"] {border:none; cursor: pointer; text-transform:uppercase;-webkit-appearance: button; background:#FF7B74;color:#fff;text-align:center;font-size:13px;font-weight:700;padding:11px 14px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}*/
+button, input[type="button"], input[type="reset"], input[type="submit"] {border:none; cursor: pointer; text-transform:uppercase;-webkit-appearance: button; background:#FF7B74;color:#fff;text-align:center;font-size:13px;font-weight:700;padding:11px 14px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
 /*button:hover, input[type="button"]:hover, input[type="reset"]:hover, input[type="submit"]:hover,*/
 /*button:focus, input[type="button"]:focus, input[type="reset"]:focus, input[type="submit"]:focus {background:#F4716A;}*/
 /*input[type="checkbox"], input[type="radio"] { box-sizing: border-box; width:100%;height:100%;}*/

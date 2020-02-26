@@ -6,7 +6,7 @@ const useFormFields = (initialState) => {
 
     return [
         fields,
-        (event) => {
+        (event, arrayPosition) => {
 
             console.log(event);
 
