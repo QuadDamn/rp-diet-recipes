@@ -9,7 +9,6 @@ const TextFieldInput = ({gridItemSize, fieldName, fieldLabel, fieldValue, handle
                     multiline
                     rows={3}
                     rowsMax={6}
-
                     variant="outlined"
                     margin="normal"
                     fullWidth
@@ -21,7 +20,7 @@ const TextFieldInput = ({gridItemSize, fieldName, fieldLabel, fieldValue, handle
                     helperText={fieldError}
                     error={!!fieldError}
                 />
-            :
+                :
                 <TextField
                     variant="outlined"
                     margin="normal"

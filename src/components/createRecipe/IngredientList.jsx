@@ -86,7 +86,7 @@ const IngredientList = ({ingredientsList, handleIngredientInputChange, handleAdd
                     className="button"
                     onClick={(event) => handleAddIngredientRow(event)}
                 >
-                    Add Ingredient
+                    Add An Ingredient
                 </Button>
             </Grid>
         </section>

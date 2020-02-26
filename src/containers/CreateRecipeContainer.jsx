@@ -6,10 +6,10 @@ import {isObjectEmpty} from '../utils/helpers';
 import {useFormFields, useFormFieldErrors} from '../utils/customHooks';
 import IngredientList from '../components/createRecipe/IngredientList';
 import TextFieldInput from '../components/createRecipe/TextFieldInput';
+import PreparationStepList from "../components/createRecipe/PreparationStepList";
 
 import {
     Button,
-    TextField,
     Grid,
     InputLabel,
     MenuItem,
@@ -18,6 +18,9 @@ import {
 } from '@material-ui/core';
 
 const CreateRecipeContainer = () => {
+    /*********************************
+     * START :: STATE INITIALIZATION *
+     ********************************/
 
     const [fields, handleFieldChange] = useFormFields({
         title: '',
@@ -60,6 +63,14 @@ const CreateRecipeContainer = () => {
 
     const [redirect, setRedirect] = useState(false);
 
+    /*******************************
+     * END :: STATE INITIALIZATION *
+     ******************************/
+
+    /********************************
+     * START :: REDUX DATA FETCHING *
+     *******************************/
+
     const recipeCategoriesSelector = useSelector(state => state.recipeCategories);
     const dispatch = useDispatch();
 
@@ -69,22 +80,13 @@ const CreateRecipeContainer = () => {
         }
     }, []);
 
+    /******************************
+     * END :: REDUX DATA FETCHING *
+     *****************************/
 
-
-    const handleFormSubmit = (event) => {
-        event.preventDefault();
-
-        console.log(fields);
-
-    };
-
-    if (!recipeCategoriesSelector.recipeCategories || recipeCategoriesSelector.recipeCategories.loading) {
-        return (
-            <div className="preloader">
-                <div className="spinner"/>
-            </div>
-        );
-    }
+    /********************************
+     * START :: INGREDIENT HANDLERS *
+     *******************************/
 
     const handleIngredientInputChange = (event, inputField, index) => {
         let arrayCopy = [...ingredientsList];
@@ -108,14 +110,56 @@ const CreateRecipeContainer = () => {
         setIngredientList(arrayCopy);
     };
 
-    console.log(ingredientsList);
+    /******************************
+     * END :: INGREDIENT HANDLERS *
+     *****************************/
+
+    /*********************************************
+     * START :: PREPARATION INSTRUCTION HANDLERS *
+     ********************************************/
+
+    const handlePreparationStepInputChange = (event, inputField, index) => {
+        let arrayCopy = [...preparationInstructions];
+        arrayCopy[index] = event.target.value;
+        setPreparationInstructions(arrayCopy);
+    };
+
+    const handleAddPreparationStepRow = (event) => {
+        let arrayCopy = [...preparationInstructions];
+        arrayCopy.push('');
+        setPreparationInstructions(arrayCopy);
+    };
+
+    const handleRemovePreparationStepRow = (event, index) => {
+        const arrayCopy = [...preparationInstructions];
+        arrayCopy.splice(index, 1);
+        setPreparationInstructions(arrayCopy);
+    };
+
+    /*******************************************
+     * END :: PREPARATION INSTRUCTION HANDLERS *
+     ******************************************/
+
+    const handleFormSubmit = (event) => {
+        event.preventDefault();
+
+        console.log(fields);
+
+    };
+
+    if (!recipeCategoriesSelector.recipeCategories || recipeCategoriesSelector.recipeCategories.loading) {
+        return (
+            <div className="preloader">
+                <div className="spinner"/>
+            </div>
+        );
+    }
 
     return (
         <main className="main" role="main">
             <Helmet>
                 <title>Create New Recipe | RP Recipes</title>
-                {/*<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />*/}
-                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
             </Helmet>
 
             <div className="wrap clearfix">
@@ -148,7 +192,8 @@ const CreateRecipeContainer = () => {
                                                 labelWidth={65}
                                             >
                                                 {recipeCategoriesSelector.recipeCategories.data.items.map((category, index) => {
-                                                    return <MenuItem key={index} value={category.sys.id}>{category.fields.name}</MenuItem>
+                                                    return <MenuItem key={index}
+                                                                     value={category.sys.id}>{category.fields.name}</MenuItem>
                                                 })}
                                             </Select>
                                         </FormControl>
@@ -212,45 +257,12 @@ const CreateRecipeContainer = () => {
                                     handleRemoveIngredientRow={handleRemoveIngredientRow}
                                 />
 
-                                {/*    <p>All fields are required.</p>*/}
-                                {/*    <div className="f-row">*/}
-                                {/*        <div className="full"><input type="text" placeholder="Recipe title"/></div>*/}
-                                {/*    </div>*/}
-                                {/*    <div className="f-row">*/}
-                                {/*        <div className="third"><input type="text" placeholder="Preparation time"/></div>*/}
-                                {/*        <div className="third"><input type="text" placeholder="Cooking time"/></div>*/}
-                                {/*        <div className="third"><input type="text" placeholder="Difficulty"/></div>*/}
-                                {/*    </div>*/}
-                                {/*    <div className="f-row">*/}
-                                {/*        <div className="third"><input type="text"*/}
-                                {/*                                      placeholder="Serves how many people?"/></div>*/}
-                                {/*        <div className="third"><select>*/}
-                                {/*            <option selected="selected">Select a category</option>*/}
-                                {/*        </select></div>*/}
-                                {/*    </div>*/}
-                                {/*</section>*/}
-
-                                {/*<section>*/}
-                                {/*    <h2>Description</h2>*/}
-                                {/*    <div className="f-row">*/}
-                                {/*        <div className="full"><textarea placeholder="Recipe title"></textarea></div>*/}
-                                {/*    </div>*/}
-                                {/*</section>*/}
-
-                                {/*<section>*/}
-
-                                {/*</section>*/}
-
-                                {/*<section>*/}
-                                {/*    <h2>Instructions <span>(enter instructions, each step at a time)</span></h2>*/}
-                                {/*    <div className="f-row instruction">*/}
-                                {/*        <div className="full"><input type="text" placeholder="Instructions"/></div>*/}
-                                {/*        <button className="remove">-</button>*/}
-                                {/*    </div>*/}
-                                {/*    <div className="f-row full">*/}
-                                {/*        <button className="add">Add a step</button>*/}
-                                {/*    </div>*/}
-                                {/*</section>*/}
+                                <PreparationStepList
+                                    preparationStepList={preparationInstructions}
+                                    handlePreparationStepInputChange={handlePreparationStepInputChange}
+                                    handleAddPreparationStepRow={handleAddPreparationStepRow}
+                                    handleRemovePreparationStepRow={handleRemovePreparationStepRow}
+                                />
 
                                 {/*<section>*/}
                                 {/*    <h2>Photo</h2>*/}
