@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import Cropper from 'react-easy-crop';
-import getCroppedImage from "../../utils/getCroppedImage";
 
 import {
     Slider,
@@ -8,7 +7,6 @@ import {
     Button,
     DialogTitle
 } from '@material-ui/core';
-
 
 const ImageEditor = ({mainImage, onClose, open, handleMainImageSave}) => {
 
@@ -25,8 +23,6 @@ const ImageEditor = ({mainImage, onClose, open, handleMainImageSave}) => {
     };
 
     const [cropperSettings, setCropperSettings] = useState(cropperInitialValues);
-
-    console.log(cropperSettings);
 
     const handleCropChange = (crop) => {
         setCropperSettings({
@@ -55,8 +51,6 @@ const ImageEditor = ({mainImage, onClose, open, handleMainImageSave}) => {
             zoom
         })
     };
-
-
 
     return (
         <Dialog onClose={onClose} aria-labelledby="editing-recipe-image-dialog-title" open={open}>

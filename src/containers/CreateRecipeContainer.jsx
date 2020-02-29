@@ -7,6 +7,8 @@ import {useFormFields, useFormFieldErrors} from '../utils/customHooks';
 import IngredientList from '../components/createRecipe/IngredientList';
 import TextFieldInput from '../components/createRecipe/TextFieldInput';
 import PreparationStepList from "../components/createRecipe/PreparationStepList";
+import validateImage from '../utils/validateImage';
+import CustomSnackbar from "../components/shared/CustomSnackbar";
 
 import {
     Button,
@@ -15,8 +17,7 @@ import {
     MenuItem,
     FormControl,
     Select,
-    TextField,
-    InputAdornment
+    TextField
 } from '@material-ui/core';
 import ImageEditor from "../components/shared/ImageEditor";
 import getCroppedImage from "../utils/getCroppedImage";
@@ -51,6 +52,7 @@ const CreateRecipeContainer = () => {
     );
 
     const [mainImage, setMainImage] = useState();
+    const [mainImageUploadError, setMainImageUploadError] = useState();
     const [mainImageDialogOpen, setMainImageDialogOpen] = useState(false);
     const [croppedMainImage, setCroppedMainImage] = useState();
 
@@ -90,25 +92,18 @@ const CreateRecipeContainer = () => {
      * END :: REDUX DATA FETCHING *
      *****************************/
 
-    const readFile = (file) => {
-        return new Promise(resolve => {
-            const reader = new FileReader();
-            reader.addEventListener('load', () => resolve(reader.result), false);
-            reader.readAsDataURL(file);
-        })
-    };
-
     const handleMainImageInputChange = async (event) => {
-        // Validation -- Width of image needs to be at least 650px.
-        // Needs to be an image type -- jpg, png, gif.
+        const imageFilePath = event.target.value;
+        const imageFile = event.target.files[0];
 
-        const file = event.target.files[0];
-        let imageDataUrl = await readFile(file);
+        const imageDataUrl = await validateImage(imageFilePath, imageFile);
 
-        console.log(imageDataUrl);
-
-        setMainImage(imageDataUrl);
-        setMainImageDialogOpen(true);
+        if (!"error" in imageDataUrl) {
+            setMainImage(imageDataUrl);
+            setMainImageDialogOpen(true);
+        } else {
+            setMainImageUploadError(imageDataUrl.error);
+        }
     };
 
     const handleMainImageModalClose = (event) => {
@@ -207,6 +202,11 @@ const CreateRecipeContainer = () => {
                 <title>Create New Recipe | RP Recipes</title>
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
             </Helmet>
+
+            {mainImageUploadError &&
+                <CustomSnackbar message={mainImageUploadError} severity='error' isOpen={true} />
+
+            }
 
             <div className="wrap clearfix">
                 <div className="row">
