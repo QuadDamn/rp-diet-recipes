@@ -14,8 +14,12 @@ import {
     InputLabel,
     MenuItem,
     FormControl,
-    Select
+    Select,
+    TextField,
+    InputAdornment
 } from '@material-ui/core';
+import ImageEditor from "../components/shared/ImageEditor";
+import getCroppedImage from "../utils/getCroppedImage";
 
 const CreateRecipeContainer = () => {
     /*********************************
@@ -30,7 +34,6 @@ const CreateRecipeContainer = () => {
         cookingTime: '',
         difficulty: '',
         serves: '',
-        mainImageLink: ''
     });
 
     const [ingredientsList, setIngredientList] = useState(
@@ -47,6 +50,10 @@ const CreateRecipeContainer = () => {
         ]
     );
 
+    const [mainImage, setMainImage] = useState();
+    const [mainImageDialogOpen, setMainImageDialogOpen] = useState(false);
+    const [croppedMainImage, setCroppedMainImage] = useState();
+
     const [fieldErrors, handleFieldErrorChange] = useFormFieldErrors({
         title: '',
         category: '',
@@ -54,8 +61,7 @@ const CreateRecipeContainer = () => {
         preparationTime: '',
         cookingTime: '',
         difficulty: '',
-        serves: '',
-        mainImageLink: ''
+        serves: ''
     });
 
     const [submitButtonText, setSubmitButtonText] = useState();
@@ -83,6 +89,46 @@ const CreateRecipeContainer = () => {
     /******************************
      * END :: REDUX DATA FETCHING *
      *****************************/
+
+    const readFile = (file) => {
+        return new Promise(resolve => {
+            const reader = new FileReader();
+            reader.addEventListener('load', () => resolve(reader.result), false);
+            reader.readAsDataURL(file);
+        })
+    };
+
+    const handleMainImageInputChange = async (event) => {
+        // Validation -- Width of image needs to be at least 650px.
+        // Needs to be an image type -- jpg, png, gif.
+
+        const file = event.target.files[0];
+        let imageDataUrl = await readFile(file);
+
+        console.log(imageDataUrl);
+
+        setMainImage(imageDataUrl);
+        setMainImageDialogOpen(true);
+    };
+
+    const handleMainImageModalClose = (event) => {
+      setMainImageDialogOpen(false);
+    };
+
+    const handleMainImageSave = async (croppedAreaPixels) => {
+        try {
+            const croppedImage = await getCroppedImage(
+                mainImage,
+                croppedAreaPixels
+            );
+
+            setCroppedMainImage(croppedImage);
+            setMainImageDialogOpen(false);
+        } catch (error) {
+            alert('Image crop failed.  Please try again.');
+            console.error(error);
+        }
+    };
 
     /********************************
      * START :: INGREDIENT HANDLERS *
@@ -249,6 +295,34 @@ const CreateRecipeContainer = () => {
                                         isMultiLine={false}
                                     />
                                 </Grid>
+
+                                <TextField
+                                    type="file"
+                                    variant="outlined"
+                                    margin="normal"
+                                    fullWidth
+                                    id="mainImage"
+                                    // label="Photo Upload"
+                                    name="mainImage"
+                                    // value={mainImage ? mainImage.name : ''}
+                                    onChange={handleMainImageInputChange}
+                                    // InputProps={{
+                                    //     startAdornment: <InputAdornment position="start" />,
+                                    // }}
+                                    // onChange={handleFieldChange}
+                                    // helperText={fieldError}
+                                    // error={!!fieldError}
+                                />
+
+                                <ImageEditor mainImage={mainImage} open={mainImageDialogOpen} onClose={handleMainImageModalClose} handleMainImageSave={handleMainImageSave} />
+
+                                {croppedMainImage &&
+
+                                    <img src={croppedMainImage} />
+
+                                }
+
+                                {/*<ImageUploader />*/}
 
                                 <IngredientList
                                     ingredientsList={ingredientsList}

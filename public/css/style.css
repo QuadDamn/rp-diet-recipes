@@ -948,3 +948,20 @@ h2.large 		{background-size:100% 123px;font-size:24px;}
 
 .quicklinks .button {width:90%;margin:0 0 15px;}
 }
+
+.crop-container {
+  width: 650px;
+  height: 500px;
+  position: relative;
+}
+
+.controls {
+  margin: auto;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+
