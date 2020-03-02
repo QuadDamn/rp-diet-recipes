@@ -9,6 +9,7 @@ import TextFieldInput from '../components/createRecipe/TextFieldInput';
 import PreparationStepList from "../components/createRecipe/PreparationStepList";
 import validateImage from '../utils/validateImage';
 import CustomSnackbar from "../components/shared/CustomSnackbar";
+import ImageUploader from '../components/shared/ImageUploader';
 
 import {
     Button,
@@ -17,10 +18,7 @@ import {
     MenuItem,
     FormControl,
     Select,
-    TextField
 } from '@material-ui/core';
-import ImageEditor from "../components/shared/ImageEditor";
-import getCroppedImage from "../utils/getCroppedImage";
 
 const CreateRecipeContainer = () => {
     /*********************************
@@ -51,10 +49,7 @@ const CreateRecipeContainer = () => {
         ]
     );
 
-    const [mainImage, setMainImage] = useState();
-    const [mainImageUploadError, setMainImageUploadError] = useState();
-    const [mainImageDialogOpen, setMainImageDialogOpen] = useState(false);
-    const [croppedMainImage, setCroppedMainImage] = useState();
+    const [mainImage, setMainImage] = useState('');
 
     const [fieldErrors, handleFieldErrorChange] = useFormFieldErrors({
         title: '',
@@ -91,39 +86,6 @@ const CreateRecipeContainer = () => {
     /******************************
      * END :: REDUX DATA FETCHING *
      *****************************/
-
-    const handleMainImageInputChange = async (event) => {
-        const imageFilePath = event.target.value;
-        const imageFile = event.target.files[0];
-
-        const imageDataUrl = await validateImage(imageFilePath, imageFile);
-
-        if (!"error" in imageDataUrl) {
-            setMainImage(imageDataUrl);
-            setMainImageDialogOpen(true);
-        } else {
-            setMainImageUploadError(imageDataUrl.error);
-        }
-    };
-
-    const handleMainImageModalClose = (event) => {
-      setMainImageDialogOpen(false);
-    };
-
-    const handleMainImageSave = async (croppedAreaPixels) => {
-        try {
-            const croppedImage = await getCroppedImage(
-                mainImage,
-                croppedAreaPixels
-            );
-
-            setCroppedMainImage(croppedImage);
-            setMainImageDialogOpen(false);
-        } catch (error) {
-            alert('Image crop failed.  Please try again.');
-            console.error(error);
-        }
-    };
 
     /********************************
      * START :: INGREDIENT HANDLERS *
@@ -185,6 +147,7 @@ const CreateRecipeContainer = () => {
         event.preventDefault();
 
         console.log(fields);
+        console.log(mainImage);
 
     };
 
@@ -203,10 +166,10 @@ const CreateRecipeContainer = () => {
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
             </Helmet>
 
-            {mainImageUploadError &&
-                <CustomSnackbar message={mainImageUploadError} severity='error' isOpen={true} />
+            {/*{mainImageUploadError &&*/}
+            {/*    <CustomSnackbar message={mainImageUploadError} severity='error' isOpen={true} />*/}
 
-            }
+            {/*}*/}
 
             <div className="wrap clearfix">
                 <div className="row">
@@ -296,33 +259,22 @@ const CreateRecipeContainer = () => {
                                     />
                                 </Grid>
 
-                                <TextField
-                                    type="file"
-                                    variant="outlined"
-                                    margin="normal"
-                                    fullWidth
-                                    id="mainImage"
-                                    // label="Photo Upload"
-                                    name="mainImage"
-                                    // value={mainImage ? mainImage.name : ''}
-                                    onChange={handleMainImageInputChange}
-                                    // InputProps={{
-                                    //     startAdornment: <InputAdornment position="start" />,
-                                    // }}
-                                    // onChange={handleFieldChange}
-                                    // helperText={fieldError}
-                                    // error={!!fieldError}
-                                />
+                                <section style={{marginTop: "25px"}}>
 
-                                <ImageEditor mainImage={mainImage} open={mainImageDialogOpen} onClose={handleMainImageModalClose} handleMainImageSave={handleMainImageSave} />
+                                    <h2>Recipe Image</h2>
 
-                                {croppedMainImage &&
+                                    <ImageUploader
+                                        buttonText='Choose Recipe Image'
+                                        imgExtension={['.jpg', '.jpeg', '.png', '.gif']}
+                                        maxFileSize={5242880}
+                                        fileSizeError="5MB is the max allowed image upload size."
+                                        fileTypeError="Only support JPG/JPEG, GIF, and PNG image types."
+                                        setMainImage={setMainImage}
+                                    />
 
-                                    <img src={croppedMainImage} />
+                                </section>
 
-                                }
 
-                                {/*<ImageUploader />*/}
 
                                 <IngredientList
                                     ingredientsList={ingredientsList}

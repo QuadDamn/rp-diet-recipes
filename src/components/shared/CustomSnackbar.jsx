@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const Alert = (props) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+};
 
 const useStyles = makeStyles(theme => ({
     root: {

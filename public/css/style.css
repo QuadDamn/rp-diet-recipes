@@ -964,4 +964,73 @@ h2.large 		{background-size:100% 123px;font-size:24px;}
   padding-bottom: 30px;
 }
 
+.fileUploader {
+  width: 100%;
+}
+
+.fileContainer {
+  background: #fff;
+  position: relative;
+  display: flex;
+  transition: all 0.3s ease-in;
+}
+
+.fileContainer input {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.fileContainer p {
+  font-size: 12px;
+  margin: 8px 0 4px;
+}
+
+.fileContainer .uploadPicturesWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.fileContainer .uploadPictureContainer {
+  width: 25%;
+  padding: 10px;
+  background: #edf2f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: inherit;
+  box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.1);
+  border: 1px solid #d0dbe4;
+  position: relative;
+}
+
+.fileContainer .uploadPictureContainer img.uploadPicture {
+  width: 100%;
+}
+
+.fileContainer .deleteImage {
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  color: #fff;
+  background: #ff4081;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+  font-size: 26px;
+  font-weight: bold;
+  line-height: 30px;
+  width: 30px;
+  height: 30px;
+}
+
+.flipMove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
 
