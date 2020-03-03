@@ -82,7 +82,7 @@ const IngredientList = ({ingredientsList, handleIngredientInputChange, handleAdd
                     type="button"
                     fullWidth
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                     className="button"
                     onClick={(event) => handleAddIngredientRow(event)}
                 >

@@ -41,7 +41,7 @@ const PreparationStepList = ({preparationStepList, handlePreparationStepInputCha
                     type="button"
                     fullWidth
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                     className="button"
                     onClick={(event) => handleAddPreparationStepRow(event)}
                 >

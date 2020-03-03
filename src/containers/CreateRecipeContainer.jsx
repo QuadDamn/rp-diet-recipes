@@ -274,8 +274,6 @@ const CreateRecipeContainer = () => {
 
                                 </section>
 
-
-
                                 <IngredientList
                                     ingredientsList={ingredientsList}
                                     handleIngredientInputChange={handleIngredientInputChange}
@@ -290,27 +288,16 @@ const CreateRecipeContainer = () => {
                                     handleRemovePreparationStepRow={handleRemovePreparationStepRow}
                                 />
 
-                                {/*<section>*/}
-                                {/*    <h2>Photo</h2>*/}
-                                {/*    <div className="f-row full">*/}
-                                {/*        <input type="file"/>*/}
-                                {/*    </div>*/}
-                                {/*</section>*/}
+                                <Grid container
+                                      spacing={0}
+                                      direction="column"
+                                      alignItems="center"
+                                      justify="center"
+                                      style={{ minHeight: '10vh' }}
+                                >
 
-                                {/*<section>*/}
-                                {/*    <h2>Status <span>(would you like to further edit this recipe or are you ready to publish it?)</span>*/}
-                                {/*    </h2>*/}
-                                {/*    <div className="f-row full">*/}
-                                {/*        <input type="radio" id="r1" name="radio"/>*/}
-                                {/*        <label htmlFor="r1">I am still working on it</label>*/}
-                                {/*    </div>*/}
-                                {/*    <div className="f-row full">*/}
-                                {/*        <input type="radio" id="r2" name="radio"/>*/}
-                                {/*        <label htmlFor="r2">I am ready to publish this recipe</label>*/}
-                                {/*    </div>*/}
-                                {/*</section>*/}
+                                    <Grid xs={12}>
 
-                                <div className="f-row full">
                                     <Button
                                         type="submit"
                                         fullWidth
@@ -321,7 +308,9 @@ const CreateRecipeContainer = () => {
                                     >
                                         {submitButtonText ? submitButtonText : 'Submit Recipe'}
                                     </Button>
-                                </div>
+
+                                    </Grid>
+                                </Grid>
                             </form>
                         </div>
                     </section>

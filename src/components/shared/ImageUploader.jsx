@@ -142,7 +142,7 @@ const ImageUploader = ({setMainImage, imgExtension, maxFileSize, buttonText, wit
                             </div>
                             <Button
                                 variant="contained"
-                                color="primary"
+                                color="secondary"
                                 type="button"
                                 onClick={triggerFileUpload}
                             >

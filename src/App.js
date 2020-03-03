@@ -7,6 +7,7 @@ import Footer from "./components/shared/Footer";
 import {useAuth0} from "./utils/auth0";
 import PrivateRoute from "./components/shared/PrivateRoute";
 import CreateRecipeContainer from "./containers/CreateRecipeContainer";
+import Theme from "./components/shared/ThemeProvider";
 
 function App() {
     const {loading} = useAuth0();
@@ -14,28 +15,28 @@ function App() {
     if (loading) {
         return (
             <div className="preloader">
-                <div className="spinner" />
+                <div className="spinner"/>
             </div>
         );
     }
 
     return (
-
         <Router history={history}>
             <div>
-            <Header/>
+                <Theme>
+                    <Header/>
 
-            <Switch>
-                <Route exact path="/">
-                    <HomeContainer />
-                </Route>
-                <PrivateRoute path="/recipe/new" component={CreateRecipeContainer} />
-            </Switch>
+                    <Switch>
+                        <Route exact path="/">
+                            <HomeContainer/>
+                        </Route>
+                        <PrivateRoute path="/recipe/new" component={CreateRecipeContainer}/>
+                    </Switch>
 
-            <Footer/>
+                    <Footer/>
+                </Theme>
             </div>
         </Router>
-
     );
 }
 
