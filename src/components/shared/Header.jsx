@@ -7,20 +7,8 @@ const Header = () => {
     return (
         <header className="head" role="banner">
             <div className="wrap clearfix">
-                <a href="index.html" title="SocialChef" className="logo"><img src="/images/ico/logo.png"
-                                                                              alt="SocialChef logo"/></a>
-                <nav className="main-nav" role="navigation" id="menu">
-                    <ul>
-                        <li><a href="/" title="Home"><span>Home</span></a></li>
-                        <li><a href="/recipes/category" title="Recipes By Category"><span>Recipes By Category</span></a>
-                        </li>
-                        <li><a href="/member/list" title="Member List"><span>Member List</span></a></li>
-                        {isAuthenticated && (
-                            <li><a href="/my-account" title="Member List"><span>My Account</span></a></li>
-                        )}
-                    </ul>
-                </nav>
-
+                <a href="/" title="SocialChef" className="logo"><img src="/images/ico/logo.png"
+                                                                     alt="SocialChef logo"/></a>
                 <nav className="user-nav" role="navigation">
                     <ul>
                         {!isAuthenticated && (
@@ -28,6 +16,9 @@ const Header = () => {
                                 <li className="dark"><a onClick={() => loginWithRedirect({})} title="Search for recipes"
                                                         style={{cursor: "pointer"}}><i
                                     className="icon icon-themeenergy_head"/> <span>Login</span></a></li>
+                                <li className="dark"><a href="" title="Members List"
+                                                        style={{cursor: "pointer"}}><i
+                                    className="icon icon-themeenergy_search"/> <span>Members List</span></a></li>
                                 <li className="medium"><a href="" title="Search for recipes"
                                                           style={{cursor: "pointer"}}><i
                                     className="icon icon-themeenergy_search"/> <span>Search for recipes</span></a></li>
@@ -40,13 +31,18 @@ const Header = () => {
                                 <li className="light"><a onClick={() => logout()} title="Logout"
                                                          style={{cursor: "pointer"}}><i
                                     className="icon icon-themeenergy_head"/> <span>Logout</span></a></li>
-                                <li className="medium"><a href="" title="Search for recipes"
+                                <li className="medium"><a href="" title="My Account"
                                                           style={{cursor: "pointer"}}><i
-                                    className="icon icon-themeenergy_search"/> <span>Search for recipes</span></a></li>
-                                <li className="dark"><a href="/recipe/new" title="Submit a recipe"
+                                    className="icon icon-themeenergy_head"/> <span>My Account</span></a></li>
+                                <li className="dark"><a href="" title="Members List"
                                                         style={{cursor: "pointer"}}><i
+                                    className="icon icon-themeenergy_search"/> <span>Members List</span></a></li>
+                                <li className="medium"><a href="/recipe/new" title="Submit A Recipe"
+                                                          style={{cursor: "pointer"}}><i
                                     className="icon icon-themeenergy_fork-spoon"/> <span>Submit a recipe</span></a></li>
-
+                                <li className="light"><a href="" title="Search For Recipes"
+                                                         style={{cursor: "pointer"}}><i
+                                    className="icon icon-themeenergy_search"/> <span>Search for recipes</span></a></li>
                             </Fragment>
                         )}
                     </ul>
