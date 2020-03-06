@@ -1,32 +1,39 @@
 import * as ACTIONS from '../actions/recipes';
 
-const recipes = (state = {}, action) => {
+const recipes = (state = {
+    recipes: {
+        loading: false,
+        error: null,
+        data: []
+    }}, action) => {
+
     switch (action.type) {
         case ACTIONS.FETCH_RECIPES:
             return {
                 ...state,
                 recipes: {
+                    ...state.recipes,
                     loading: true,
-                    error: null,
-                    data: {}
                 }
             };
         case ACTIONS.FETCH_RECIPES_SUCCESS:
+            const recipeData = state.recipes.data.concat(action.recipes.items);
+
             return {
                 ...state,
                 recipes: {
                     loading: false,
                     error: null,
-                    data: action.recipes
+                    data: recipeData
                 },
             };
         case ACTIONS.FETCH_RECIPES_FAILURE:
             return {
                 ...state,
                 recipes: {
+                    ...state.recipes,
                     loading: false,
                     error: action.error,
-                    data: {}
                 },
             };
         default:

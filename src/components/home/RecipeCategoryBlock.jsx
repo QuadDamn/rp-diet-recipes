@@ -5,7 +5,7 @@ const RecipeCategoryBlock = (categories) => {
         <div className="widget">
             <h3>Recipe Categories</h3>
             <ul className="boxed">
-                {categories.data.items.map((category, index) => {
+                {categories.data.map((category, index) => {
                     const boxShade = findBoxShade(index);
 
                     return (

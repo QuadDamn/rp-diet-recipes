@@ -14,7 +14,7 @@ const RecipeBlock = ({sys, fields}) => {
             <div className="container">
                 <h2><a href={`/recipe/${sys.id}/${titleForUrl}`}>{fields.title}</a></h2>
 
-                <p>{fields.shortDescription}</p>
+                {/*<p>{fields.shortDescription}</p>*/}
 
                 <div className="actions">
                     <div>

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Helmet from 'react-helmet';
 import {useDispatch, useSelector} from "react-redux";
-import {getAllRecipeCategoriesAction} from "../actions/recipeCategories";
+import {fetchRecipeCategoriesAction} from "../actions/recipeCategories";
 import {isObjectEmpty} from '../utils/helpers';
 import {useFormFields, useFormFieldErrors} from '../utils/customHooks';
 import IngredientList from '../components/createRecipe/IngredientList';
@@ -79,7 +79,7 @@ const CreateRecipeContainer = () => {
 
     useEffect(() => {
         if (isObjectEmpty(recipeCategoriesSelector)) {
-            dispatch(getAllRecipeCategoriesAction());
+            dispatch(fetchRecipeCategoriesAction());
         }
     }, []);
 

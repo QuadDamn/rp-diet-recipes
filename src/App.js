@@ -7,6 +7,7 @@ import Footer from "./components/shared/Footer";
 import {useAuth0} from "./utils/auth0";
 import PrivateRoute from "./components/shared/PrivateRoute";
 import CreateRecipeContainer from "./containers/CreateRecipeContainer";
+import PageNotFoundError from "./components/PageNotFoundError";
 import Theme from "./components/shared/ThemeProvider";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
                             <HomeContainer/>
                         </Route>
                         <PrivateRoute path="/recipe/new" component={CreateRecipeContainer}/>
+                        <Route component={PageNotFoundError} />
                     </Switch>
 
                     <Footer/>

@@ -1,9 +1,10 @@
 import React, {useEffect, Fragment} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {getAllRecipesAction} from '../actions/recipes';
-import {getAllRecipeCategoriesAction} from "../actions/recipeCategories";
+import {fetchRecipesAction} from '../actions/recipes';
+import {fetchRecipeCategoriesAction} from "../actions/recipeCategories";
 import RecipeBlock from "../components/shared/RecipeBlock";
 import RecipeCategoryBlock from "../components/home/RecipeCategoryBlock";
+import RecipeBlockLoader from "../components/shared/RecipeBlockLoader";
 
 const HomeContainer = () => {
     const recipesSelector = useSelector(state => state.recipes);
@@ -11,17 +12,36 @@ const HomeContainer = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getAllRecipesAction());
-        dispatch(getAllRecipeCategoriesAction());
+        dispatch(fetchRecipesAction());
+        dispatch(fetchRecipeCategoriesAction());
     }, []);
 
-    if (!recipesSelector.recipes || recipesSelector.recipes.loading || !recipeCategoriesSelector.recipeCategories || recipeCategoriesSelector.recipeCategories.loading) {
+    const handleScroll = (event) => {
+        const { currentCount } = this.state;
+        const element = event.target;
+        if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+            fetchRecipesAction(currentCount);
+            this.setState({
+                currentCount: currentCount + 20,
+            });
+        }
+    };
+
+    if (!recipeCategoriesSelector.recipeCategories || recipeCategoriesSelector.recipeCategories.loading) {
         return (
             <div className="preloader">
                 <div className="spinner"/>
             </div>
         );
     }
+
+    let recipeBlockLoader = '';
+
+    if (recipesSelector.recipes.data.length === 0 || recipesSelector.recipes.loading) {
+        recipeBlockLoader = <RecipeBlockLoader />;
+    }
+
+    console.log(recipesSelector.recipes);
 
     return (
         <main className="main" role="main">
@@ -94,8 +114,10 @@ const HomeContainer = () => {
                                 <h2 className="ribbon bright">Latest recipes</h2>
                             </header>
 
+                            {recipeBlockLoader}
+
                             <div className="entries row">
-                                {recipesSelector.recipes.data.items.map((recipe) => {
+                                {!recipeBlockLoader && recipesSelector.recipes.data.map((recipe) => {
                                     return (
                                         <Fragment key={recipe.fields.ID}>
                                             <RecipeBlock {...recipe} />
@@ -103,10 +125,10 @@ const HomeContainer = () => {
                                     );
                                 })}
 
-                                <div className="quicklinks">
-                                    <a href="#" className="button">More recipes</a>
-                                    <a href="" className="button scroll-to-top">Back to top</a>
-                                </div>
+                                {/*<div className="quicklinks">*/}
+                                {/*    <a href="#" className="button">More recipes</a>*/}
+                                {/*    <a href="" className="button scroll-to-top">Back to top</a>*/}
+                                {/*</div>*/}
                             </div>
 
                         </div>

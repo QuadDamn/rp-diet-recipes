@@ -1,4 +1,4 @@
-import { getEntriesByContentType } from '../utils/contentful';
+import { getEntriesByContentType } from '../utils/contentfulDelivery';
 
 export const FETCH_RECIPE_CATEGORIES = 'FETCH_RECIPE_CATEGORIES';
 export const FETCH_RECIPE_CATEGORIES_SUCCESS = 'FETCH_RECIPE_CATEGORIES_SUCCESS';
@@ -6,35 +6,35 @@ export const FETCH_RECIPE_CATEGORIES_FAILURE = 'FETCH_RECIPE_CATEGORIES_FAILURE'
 
 const RECIPE_CATEGORY_CONTENT_TYPE = 'recipeCategories';
 
-const getAllRecipeCategories = () => {
+const fetchRecipeCategories = () => {
     return {
         type: FETCH_RECIPE_CATEGORIES
     }
 };
 
-const getAllRecipeCategoriesSuccess = (recipeCategories) => {
+const fetchRecipeCategoriesSuccess = (recipeCategories) => {
     return {
         type: FETCH_RECIPE_CATEGORIES_SUCCESS,
         recipeCategories
     }
 };
 
-const getAllRecipeCategoriesFailure = (error) => {
+const fetchRecipeCategoriesFailure = (error) => {
     return {
         type: FETCH_RECIPE_CATEGORIES_FAILURE,
         error
     }
 };
 
-export function getAllRecipeCategoriesAction() {
+export function fetchRecipeCategoriesAction() {
     return async (dispatch) => {
-        dispatch(getAllRecipeCategories());
+        dispatch(fetchRecipeCategories());
 
         try {
             const recipeCategories = await getEntriesByContentType(RECIPE_CATEGORY_CONTENT_TYPE, { order: 'fields.name'});
-            dispatch(getAllRecipeCategoriesSuccess(recipeCategories));
+            dispatch(fetchRecipeCategoriesSuccess(recipeCategories));
         } catch (error) {
-            dispatch(getAllRecipeCategoriesFailure(error));
+            dispatch(fetchRecipeCategoriesFailure(error));
         }
     }
 }

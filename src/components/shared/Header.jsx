@@ -13,13 +13,13 @@ const Header = () => {
                     <ul>
                         {!isAuthenticated && (
                             <Fragment>
-                                <li className="dark"><a onClick={() => loginWithRedirect({})} title="Search for recipes"
+                                <li className="light"><a onClick={() => loginWithRedirect({})} title="Login"
                                                         style={{cursor: "pointer"}}><i
-                                    className="icon icon-themeenergy_head"/> <span>Login</span></a></li>
-                                <li className="dark"><a href="" title="Members List"
+                                    className="icon icon-themeenergy_inbox-income"/> <span>Login</span></a></li>
+                                <li className="medium"><a href="" title="Members List"
                                                         style={{cursor: "pointer"}}><i
-                                    className="icon icon-themeenergy_search"/> <span>Members List</span></a></li>
-                                <li className="medium"><a href="" title="Search for recipes"
+                                    className="icon icon-themeenergy_list-2"/> <span>Members List</span></a></li>
+                                <li className="dark"><a href="" title="Search For Recipes"
                                                           style={{cursor: "pointer"}}><i
                                     className="icon icon-themeenergy_search"/> <span>Search for recipes</span></a></li>
 
@@ -30,13 +30,13 @@ const Header = () => {
                             <Fragment>
                                 <li className="light"><a onClick={() => logout()} title="Logout"
                                                          style={{cursor: "pointer"}}><i
-                                    className="icon icon-themeenergy_head"/> <span>Logout</span></a></li>
+                                    className="icon icon-themeenergy_inbox-outcome"/> <span>Logout</span></a></li>
                                 <li className="medium"><a href="" title="My Account"
                                                           style={{cursor: "pointer"}}><i
-                                    className="icon icon-themeenergy_head"/> <span>My Account</span></a></li>
+                                    className="icon icon-themeenergy_id-card"/> <span>My Account</span></a></li>
                                 <li className="dark"><a href="" title="Members List"
                                                         style={{cursor: "pointer"}}><i
-                                    className="icon icon-themeenergy_search"/> <span>Members List</span></a></li>
+                                    className="icon icon-themeenergy_list-2"/> <span>Members List</span></a></li>
                                 <li className="medium"><a href="/recipe/new" title="Submit A Recipe"
                                                           style={{cursor: "pointer"}}><i
                                     className="icon icon-themeenergy_fork-spoon"/> <span>Submit a recipe</span></a></li>
