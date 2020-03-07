@@ -4,7 +4,6 @@ import {fetchRecipesAction, RECIPE_FETCH_LIMIT} from '../actions/recipes';
 import {fetchRecipeCategoriesAction} from "../actions/recipeCategories";
 import RecipeBlock from "../components/shared/RecipeBlock";
 import RecipeCategoryBlock from "../components/home/RecipeCategoryBlock";
-import RecipeBlockLoader from "../components/shared/RecipeBlockLoader";
 
 const HomeContainer = () => {
     const [currentRecipeCount, setCurrentRecipeCount] = useState(0);
@@ -38,12 +37,6 @@ const HomeContainer = () => {
                 <div className="spinner"/>
             </div>
         );
-    }
-
-    let recipeBlockLoader = '';
-
-    if (recipesSelector.recipes.data.length === 0 || recipesSelector.recipes.loading) {
-        recipeBlockLoader = <RecipeBlockLoader/>;
     }
 
     return (
@@ -119,17 +112,15 @@ const HomeContainer = () => {
 
                             <div className="entries row"
                                  onScroll={handleScroll}
-                                 style={{height: "400px", overflow: "scroll"}}
+                                 style={{height: "500px", overflow: "scroll"}}
                             >
-                                {!recipeBlockLoader && recipesSelector.recipes.data.map((recipe, index) => {
+                                {recipesSelector.recipes.data.length !== 0 && !recipesSelector.recipes.loading && recipesSelector.recipes.data.map((recipe, index) => {
                                     return (
                                         <Fragment key={index}>
                                             <RecipeBlock {...recipe} />
                                         </Fragment>
                                     );
                                 })}
-
-                                {recipeBlockLoader}
 
                                 {recipesSelector.recipes.loading && (
                                     <div className="spinner-smaller"/>

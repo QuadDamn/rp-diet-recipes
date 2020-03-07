@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Helmet from 'react-helmet';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchRecipeCategoriesAction} from "../actions/recipeCategories";
-import {isObjectEmpty} from '../utils/helpers';
+import { Redirect } from 'react-router-dom';
 import {useFormFields, useFormFieldErrors} from '../utils/customHooks';
 import IngredientList from '../components/createRecipe/IngredientList';
 import TextFieldInput from '../components/createRecipe/TextFieldInput';
@@ -17,6 +17,7 @@ import {
     FormControl,
     Select,
 } from '@material-ui/core';
+import { createRecipeAction } from '../actions/recipes';
 
 const CreateRecipeContainer = () => {
     /*********************************
@@ -76,7 +77,7 @@ const CreateRecipeContainer = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (isObjectEmpty(recipeCategoriesSelector)) {
+        if (recipeCategoriesSelector.recipeCategories.data.length === 0) {
             dispatch(fetchRecipeCategoriesAction());
         }
     }, []);
@@ -141,12 +142,17 @@ const CreateRecipeContainer = () => {
      * END :: PREPARATION INSTRUCTION HANDLERS *
      ******************************************/
 
-    const handleFormSubmit = (event) => {
+    const handleFormSubmit = async (event) => {
         event.preventDefault();
 
-        console.log(fields);
-        console.log(mainImage);
+        fields.mainImage = mainImage;
 
+        const recipe = await dispatch(createRecipeAction(fields));
+
+        console.log(recipe);
+
+        // Redirect the user to the newly created recipe page upon success.
+        // setRedirect(response.status === 200 ? '/new-account' : '/disqualified');
     };
 
     if (!recipeCategoriesSelector.recipeCategories || recipeCategoriesSelector.recipeCategories.loading) {
@@ -159,6 +165,17 @@ const CreateRecipeContainer = () => {
 
     return (
         <main className="main" role="main">
+
+            {redirect ? (
+                <Redirect
+                to={{
+                    pathname: redirect
+                }}
+                />
+            ) : (
+                ''
+            )}
+
             <Helmet>
                 <title>Create New Recipe | RP Recipes</title>
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>

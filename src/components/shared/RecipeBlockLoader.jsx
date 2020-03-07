@@ -8,8 +8,6 @@ const RecipeBlockLoader = () => {
             height={507}
             width={900}
             speed={2}
-            // primaryColor="#f3f3f3"
-            // secondaryColor="#ecebeb"
         >
             <rect x="0" y="60" rx="0" ry="0" width="250" height="120" />
             <rect x="0" y="189" rx="0" ry="0" width="250" height="15" />

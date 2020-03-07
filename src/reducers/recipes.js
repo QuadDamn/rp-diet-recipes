@@ -38,6 +38,13 @@ const recipes = (state = {
                     error: action.error,
                 },
             };
+
+        case ACTIONS.CREATE_RECIPE:
+            return {
+
+            }
+
+
         default:
             return state;
     }
