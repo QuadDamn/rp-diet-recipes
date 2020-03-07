@@ -19,8 +19,8 @@ const RecipeBlock = ({sys, fields}) => {
                 <div className="actions">
                     <div>
                         <div className="difficulty"><i className={`ico i-${fields.difficulty}`}></i><a
-                            href="#">{fields.difficulty}</a></div>
-                        <div className="likes"><i className="fa fa-heart"></i><a href="#">{fields.favoritesCount}</a>
+                            href="#!">{fields.difficulty}</a></div>
+                        <div className="likes"><i className="fa fa-heart"></i><a href="#!">{fields.favoritesCount}</a>
                         </div>
                         <div className="comments"><i className="fa fa-comment"></i><a
                             href="recipe.html#comments">{fields.commentsCount}</a></div>

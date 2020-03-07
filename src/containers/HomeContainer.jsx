@@ -7,7 +7,6 @@ import RecipeCategoryBlock from "../components/home/RecipeCategoryBlock";
 import RecipeBlockLoader from "../components/shared/RecipeBlockLoader";
 
 const HomeContainer = () => {
-
     const [currentRecipeCount, setCurrentRecipeCount] = useState(0);
 
     const recipesSelector = useSelector(state => state.recipes, shallowEqual);
@@ -17,7 +16,7 @@ const HomeContainer = () => {
     useEffect(() => {
         dispatch(fetchRecipesAction());
         dispatch(fetchRecipeCategoriesAction());
-    }, [dispatch, fetchRecipesAction, fetchRecipeCategoriesAction]);
+    }, [dispatch]);
 
     const handleScroll = async (event) => {
         const element = event.target;
@@ -47,8 +46,6 @@ const HomeContainer = () => {
         recipeBlockLoader = <RecipeBlockLoader/>;
     }
 
-    console.log(recipesSelector.recipes);
-
     return (
         <main className="main" role="main">
             <div className="wrap clearfix">
@@ -74,7 +71,7 @@ const HomeContainer = () => {
                                                 volutpat. </p>
                                             <div className="actions">
                                                 <div>
-                                                    <a href="#" className="button">See the full recipe</a>
+                                                    <a href="#!" className="button">See the full recipe</a>
                                                     <div className="more"><a href="recipes2.html">See past recipes of
                                                         the day</a></div>
                                                 </div>
@@ -103,8 +100,8 @@ const HomeContainer = () => {
                                             </blockquote>
                                             <div className="actions">
                                                 <div>
-                                                    <a href="#" className="button">Check out her recipes</a>
-                                                    <div className="more"><a href="#">See past featured members</a>
+                                                    <a href="#!" className="button">Check out her recipes</a>
+                                                    <div className="more"><a href="#!">See past featured members</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -120,14 +117,13 @@ const HomeContainer = () => {
                                 <h2 className="ribbon bright">Latest recipes</h2>
                             </header>
 
-
                             <div className="entries row"
                                  onScroll={handleScroll}
                                  style={{height: "400px", overflow: "scroll"}}
                             >
-                                {!recipeBlockLoader && recipesSelector.recipes.data.map((recipe) => {
+                                {!recipeBlockLoader && recipesSelector.recipes.data.map((recipe, index) => {
                                     return (
-                                        <Fragment key={recipe.fields.ID}>
+                                        <Fragment key={index}>
                                             <RecipeBlock {...recipe} />
                                         </Fragment>
                                     );
@@ -138,33 +134,25 @@ const HomeContainer = () => {
                                 {recipesSelector.recipes.loading && (
                                     <div className="spinner-smaller"/>
                                 )}
-
-
                             </div>
 
                             <div className="quicklinks" style={{marginTop: "20px"}}>
                                 {(!recipesSelector.recipes.loading && recipesSelector.recipes.total > recipesSelector.recipes.data.length) && (
-                                    <a href="#" className="button">Scroll Down To Load More</a>
+                                    <a href="#!" className="button">Scroll Down To Load More</a>
                                 )}
                             </div>
-
-
                         </div>
-
-
                     </section>
 
-
                     <aside className="sidebar one-fourth">
-
                         <RecipeCategoryBlock {...recipeCategoriesSelector.recipeCategories} />
 
                         <div className="widget members">
                             <h3>Our members</h3>
                             <div id="members-list-options" className="item-options">
-                                <a href="#">Newest</a>
-                                <a className="selected" href="#">Active</a>
-                                <a href="#">Popular</a>
+                                <a href="#!">Newest</a>
+                                <a className="selected" href="#!">Active</a>
+                                <a href="#!">Popular</a>
                             </div>
                             <ul className="boxed">
                                 <li>

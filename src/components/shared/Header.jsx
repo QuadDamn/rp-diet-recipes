@@ -13,13 +13,13 @@ const Header = () => {
                     <ul>
                         {!isAuthenticated && (
                             <Fragment>
-                                <li className="light"><a onClick={() => loginWithRedirect({})} title="Login"
+                                <li className="light"><a href="#!" onClick={() => loginWithRedirect({})} title="Login"
                                                         style={{cursor: "pointer"}}><i
                                     className="icon icon-themeenergy_inbox-income"/> <span>Login</span></a></li>
-                                <li className="medium"><a href="" title="Members List"
+                                <li className="medium"><a href="#!" title="Members List"
                                                         style={{cursor: "pointer"}}><i
                                     className="icon icon-themeenergy_list-2"/> <span>Members List</span></a></li>
-                                <li className="dark"><a href="" title="Search For Recipes"
+                                <li className="dark"><a href="#!" title="Search For Recipes"
                                                           style={{cursor: "pointer"}}><i
                                     className="icon icon-themeenergy_search"/> <span>Search for recipes</span></a></li>
 
@@ -28,19 +28,19 @@ const Header = () => {
 
                         {isAuthenticated && (
                             <Fragment>
-                                <li className="light"><a onClick={() => logout()} title="Logout"
+                                <li className="light"><a href="#!" onClick={() => logout()} title="Logout"
                                                          style={{cursor: "pointer"}}><i
                                     className="icon icon-themeenergy_inbox-outcome"/> <span>Logout</span></a></li>
-                                <li className="medium"><a href="" title="My Account"
+                                <li className="medium"><a href="#!" title="My Account"
                                                           style={{cursor: "pointer"}}><i
                                     className="icon icon-themeenergy_id-card"/> <span>My Account</span></a></li>
-                                <li className="dark"><a href="" title="Members List"
+                                <li className="dark"><a href="#!" title="Members List"
                                                         style={{cursor: "pointer"}}><i
                                     className="icon icon-themeenergy_list-2"/> <span>Members List</span></a></li>
                                 <li className="medium"><a href="/recipe/new" title="Submit A Recipe"
                                                           style={{cursor: "pointer"}}><i
                                     className="icon icon-themeenergy_fork-spoon"/> <span>Submit a recipe</span></a></li>
-                                <li className="light"><a href="" title="Search For Recipes"
+                                <li className="light"><a href="#!" title="Search For Recipes"
                                                          style={{cursor: "pointer"}}><i
                                     className="icon icon-themeenergy_search"/> <span>Search for recipes</span></a></li>
                             </Fragment>

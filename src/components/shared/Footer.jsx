@@ -15,19 +15,19 @@ const Footer = () => {
                     <article className="one-fourth">
                         <h5>Need help?</h5>
                         <p>Contact us via phone or email</p>
-                        <p><em>T:</em> +1 555 555 555<br/><em>E:</em> <a href="#">socialchef@email.com</a></p>
+                        <p><em>T:</em> +1 555 555 555<br/><em>E:</em> <a href="#!">socialchef@email.com</a></p>
                     </article>
                     <article className="one-fourth">
                         <h5>Follow us</h5>
                         <ul className="social">
-                            <li><a href="#" title="facebook"><i className="fa fa-fw fa-facebook"></i></a></li>
-                            <li><a href="#" title="youtube"><i className="fa  fa-fw fa-youtube"></i></a></li>
-                            <li><a href="#" title="rss"><i className="fa  fa-fw fa-rss"></i></a></li>
-                            <li><a href="#" title="gplus"><i className="fa fa-fw fa-google-plus"></i></a></li>
-                            <li><a href="#" title="linkedin"><i className="fa fa-fw fa-linkedin"></i></a></li>
-                            <li><a href="#" title="twitter"><i className="fa fa-fw fa-twitter"></i></a></li>
-                            <li><a href="#" title="pinterest"><i className="fa fa-fw fa-pinterest-p"></i></a></li>
-                            <li><a href="#" title="vimeo"><i className="fa fa-fw fa-vimeo"></i></a></li>
+                            <li><a href="#!" title="facebook"><i className="fa fa-fw fa-facebook"></i></a></li>
+                            <li><a href="#!" title="youtube"><i className="fa  fa-fw fa-youtube"></i></a></li>
+                            <li><a href="#!" title="rss"><i className="fa  fa-fw fa-rss"></i></a></li>
+                            <li><a href="#!" title="gplus"><i className="fa fa-fw fa-google-plus"></i></a></li>
+                            <li><a href="#!" title="linkedin"><i className="fa fa-fw fa-linkedin"></i></a></li>
+                            <li><a href="#!" title="twitter"><i className="fa fa-fw fa-twitter"></i></a></li>
+                            <li><a href="#!" title="pinterest"><i className="fa fa-fw fa-pinterest-p"></i></a></li>
+                            <li><a href="#!" title="vimeo"><i className="fa fa-fw fa-vimeo"></i></a></li>
                         </ul>
                     </article>
 

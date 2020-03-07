@@ -7,8 +7,6 @@ import {useFormFields, useFormFieldErrors} from '../utils/customHooks';
 import IngredientList from '../components/createRecipe/IngredientList';
 import TextFieldInput from '../components/createRecipe/TextFieldInput';
 import PreparationStepList from "../components/createRecipe/PreparationStepList";
-import validateImage from '../utils/validateImage';
-import CustomSnackbar from "../components/shared/CustomSnackbar";
 import ImageUploader from '../components/shared/ImageUploader';
 
 import {
@@ -200,7 +198,7 @@ const CreateRecipeContainer = () => {
                                                 onChange={handleFieldChange}
                                                 labelWidth={65}
                                             >
-                                                {recipeCategoriesSelector.recipeCategories.data.items.map((category, index) => {
+                                                {recipeCategoriesSelector.recipeCategories.data.map((category, index) => {
                                                     return <MenuItem key={index}
                                                                      value={category.sys.id}>{category.fields.name}</MenuItem>
                                                 })}
@@ -296,7 +294,7 @@ const CreateRecipeContainer = () => {
                                       style={{ minHeight: '10vh' }}
                                 >
 
-                                    <Grid xs={12}>
+                                    <Grid item xs={12}>
 
                                     <Button
                                         type="submit"

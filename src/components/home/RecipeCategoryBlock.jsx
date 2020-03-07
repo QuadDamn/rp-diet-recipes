@@ -10,7 +10,7 @@ const RecipeCategoryBlock = (categories) => {
 
                     return (
                         <li className={boxShade} key={index}>
-                            <a href="" title={category.fields.name}>
+                            <a href="#!" title={category.fields.name}>
                                 <i className={`icon icon-themeenergy_${category.fields.iconName}`} />
                                 <span>{category.fields.name}</span>
                             </a>
