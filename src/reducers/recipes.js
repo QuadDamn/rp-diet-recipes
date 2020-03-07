@@ -4,8 +4,11 @@ const recipes = (state = {
     recipes: {
         loading: false,
         error: null,
+        total: 0,
         data: []
     }}, action) => {
+
+    console.log(action);
 
     switch (action.type) {
         case ACTIONS.FETCH_RECIPES:
@@ -24,6 +27,7 @@ const recipes = (state = {
                 recipes: {
                     loading: false,
                     error: null,
+                    total: action.recipes.total,
                     data: recipeData
                 },
             };

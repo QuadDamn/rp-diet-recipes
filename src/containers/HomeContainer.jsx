@@ -1,29 +1,35 @@
-import React, {useEffect, Fragment} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {fetchRecipesAction} from '../actions/recipes';
+import React, {useEffect, useState, Fragment} from 'react';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+import {fetchRecipesAction, RECIPE_FETCH_LIMIT} from '../actions/recipes';
 import {fetchRecipeCategoriesAction} from "../actions/recipeCategories";
 import RecipeBlock from "../components/shared/RecipeBlock";
 import RecipeCategoryBlock from "../components/home/RecipeCategoryBlock";
 import RecipeBlockLoader from "../components/shared/RecipeBlockLoader";
 
 const HomeContainer = () => {
-    const recipesSelector = useSelector(state => state.recipes);
+
+    const [currentRecipeCount, setCurrentRecipeCount] = useState(0);
+
+    const recipesSelector = useSelector(state => state.recipes, shallowEqual);
     const recipeCategoriesSelector = useSelector(state => state.recipeCategories);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchRecipesAction());
         dispatch(fetchRecipeCategoriesAction());
-    }, []);
+    }, [dispatch, fetchRecipesAction, fetchRecipeCategoriesAction]);
 
-    const handleScroll = (event) => {
-        const { currentCount } = this.state;
+    const handleScroll = async (event) => {
         const element = event.target;
-        if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-            fetchRecipesAction(currentCount);
-            this.setState({
-                currentCount: currentCount + 20,
-            });
+
+        if (element.scrollHeight - element.scrollTop === element.clientHeight && recipesSelector.recipes.total > recipesSelector.recipes.data.length) {
+            const nextRecipeOffset = currentRecipeCount + RECIPE_FETCH_LIMIT;
+
+            // Doing this because if you choose a LIMIT over the TOTAL, then Contentful just starts back at the beginning.  It doesn't respect a LIMIT up to the TOTAL.
+            const limitOverride = ((recipesSelector.recipes.data.length + RECIPE_FETCH_LIMIT) > recipesSelector.recipes.total) ? recipesSelector.recipes.total - recipesSelector.recipes.data.length : RECIPE_FETCH_LIMIT;
+
+            await dispatch(fetchRecipesAction(nextRecipeOffset, limitOverride));
+            setCurrentRecipeCount(nextRecipeOffset)
         }
     };
 
@@ -38,7 +44,7 @@ const HomeContainer = () => {
     let recipeBlockLoader = '';
 
     if (recipesSelector.recipes.data.length === 0 || recipesSelector.recipes.loading) {
-        recipeBlockLoader = <RecipeBlockLoader />;
+        recipeBlockLoader = <RecipeBlockLoader/>;
     }
 
     console.log(recipesSelector.recipes);
@@ -114,9 +120,11 @@ const HomeContainer = () => {
                                 <h2 className="ribbon bright">Latest recipes</h2>
                             </header>
 
-                            {recipeBlockLoader}
 
-                            <div className="entries row">
+                            <div className="entries row"
+                                 onScroll={handleScroll}
+                                 style={{height: "400px", overflow: "scroll"}}
+                            >
                                 {!recipeBlockLoader && recipesSelector.recipes.data.map((recipe) => {
                                     return (
                                         <Fragment key={recipe.fields.ID}>
@@ -125,11 +133,21 @@ const HomeContainer = () => {
                                     );
                                 })}
 
-                                {/*<div className="quicklinks">*/}
-                                {/*    <a href="#" className="button">More recipes</a>*/}
-                                {/*    <a href="" className="button scroll-to-top">Back to top</a>*/}
-                                {/*</div>*/}
+                                {recipeBlockLoader}
+
+                                {recipesSelector.recipes.loading && (
+                                    <div className="spinner-smaller"/>
+                                )}
+
+
                             </div>
+
+                            <div className="quicklinks" style={{marginTop: "20px"}}>
+                                {(!recipesSelector.recipes.loading && recipesSelector.recipes.total > recipesSelector.recipes.data.length) && (
+                                    <a href="#" className="button">Scroll Down To Load More</a>
+                                )}
+                            </div>
+
 
                         </div>
 

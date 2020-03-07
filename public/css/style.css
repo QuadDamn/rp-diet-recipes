@@ -678,6 +678,7 @@ div.uploader.disabled.active span.action 		{}
 .preloader {position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:999;}
 
 .spinner {width:90px;height:90px;background-color:#FF7A73;margin: 20% auto;-webkit-animation: spinner 1.2s infinite ease-in-out;-moz-animation: spinner 1.2s infinite ease-in-out;animation: spinner 1.2s infinite ease-in-out;}
+.spinner-smaller {width:45px;height:45px;background-color:#FF7A73;margin: 0 auto;-webkit-animation: spinner 1.2s infinite ease-in-out;-moz-animation: spinner 1.2s infinite ease-in-out;animation: spinner 1.2s infinite ease-in-out;}
 
 @-webkit-keyframes spinner {
   0%	{-webkit-transform: perspective(120px) }
