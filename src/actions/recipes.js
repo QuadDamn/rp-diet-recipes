@@ -65,7 +65,7 @@ export function fetchRecipesAction(skip, limit = RECIPE_FETCH_LIMIT) {
     }
 }
 
-export function createRecipeAction(recipeData) {
+export function createRecipeAction(recipeData, imageData) {
 
     console.log(recipeData);
 
@@ -73,7 +73,7 @@ export function createRecipeAction(recipeData) {
         dispatch(createRecipe());
 
         try {
-            const recipe = await createEntry(RECIPE_CONTENT_TYPE, recipeData);
+            const recipe = await createEntry(RECIPE_CONTENT_TYPE, recipeData, imageData);
             return dispatch(createRecipeSuccess(recipe));
         } catch (error) {
             return dispatch(createRecipeFailure(error));

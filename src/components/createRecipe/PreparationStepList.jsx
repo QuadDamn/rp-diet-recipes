@@ -21,7 +21,7 @@ const PreparationStepList = ({preparationStepList, handlePreparationStepInputCha
                                 label={`Step ${index + 1} Instructions`}
                                 name={`preparationStep${index}`}
                                 value={step}
-                                onChange={handlePreparationStepInputChange}
+                                onChange={(event) => handlePreparationStepInputChange(event, 'instruction', index)}
                                 // helperText={fieldError}
                                 // error={!!fieldError}
                             />

@@ -9,7 +9,6 @@ import {Grid, Button} from "@material-ui/core";
 const styles = {
     display: "flex",
     alignItems: "left",
-    // justifyContent: "center",
     flexWrap: "wrap",
     width: "100%"
 };
@@ -19,7 +18,7 @@ const ERROR = {
     FILESIZE_TOO_LARGE: 'FILESIZE_TOO_LARGE'
 };
 
-const ImageUploader = ({setMainImage, imgExtension, maxFileSize, buttonText, withIcon, fileSizeError, fileTypeError}) => {
+const ImageUploader = ({setMainImage, imgExtension, maxFileSize, buttonText, fileSizeError, fileTypeError}) => {
 
     const [imageUploadSettings, setImageUploadSettings] = useState({
         picture: '',
@@ -43,7 +42,6 @@ const ImageUploader = ({setMainImage, imgExtension, maxFileSize, buttonText, wit
             name: imageFile.name,
         };
 
-        // Check for file extension
         if (!hasExtension(imageFile.name)) {
             fileError = Object.assign(fileError, {
                 name: imageFile.name,
@@ -52,7 +50,6 @@ const ImageUploader = ({setMainImage, imgExtension, maxFileSize, buttonText, wit
             imageFileErrors.push(fileError);
         }
 
-        // Check for file size
         if (imageFile.size > maxFileSize) {
             fileError = Object.assign(fileError, {
                 name: imageFile.name,
@@ -69,21 +66,21 @@ const ImageUploader = ({setMainImage, imgExtension, maxFileSize, buttonText, wit
             fileErrors: imageFileErrors
         });
 
-        setMainImage(fileData.dataURL);
+        setMainImage({
+            encoded: fileData.dataURL,
+            originalData: imageFile
+        });
     };
 
     const onUploadClick = (e) => {
         e.target.value = null;
     };
 
-    // Read a file and return a promise that when resolved gives the file itself and the data URL
     const readFile = (file) => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
 
-            // Read the image via FileReader API and save image result in state.
             reader.onload = (e) => {
-                // Add the file name to the data URL
                 let dataURL = e.target.result;
                 dataURL = dataURL.replace(";base64", `;name=${file.name};base64`);
                 resolve({file, dataURL});

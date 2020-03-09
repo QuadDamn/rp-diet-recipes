@@ -8,6 +8,7 @@ import IngredientList from '../components/createRecipe/IngredientList';
 import TextFieldInput from '../components/createRecipe/TextFieldInput';
 import PreparationStepList from "../components/createRecipe/PreparationStepList";
 import ImageUploader from '../components/shared/ImageUploader';
+import {useAuth0} from '../utils/auth0';
 
 import {
     Button,
@@ -24,7 +25,10 @@ const CreateRecipeContainer = () => {
      * START :: STATE INITIALIZATION *
      ********************************/
 
+    const { user } = useAuth0();
+
     const [fields, handleFieldChange] = useFormFields({
+        authorUserId: user.sub, // User ID coming from Auth0 logged in user.
         title: '',
         category: '',
         shortDescription: '',
@@ -32,6 +36,7 @@ const CreateRecipeContainer = () => {
         cookingTime: '',
         difficulty: '',
         serves: '',
+        allowComments: true
     });
 
     const [ingredientsList, setIngredientList] = useState(
@@ -64,6 +69,8 @@ const CreateRecipeContainer = () => {
     const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
     const [redirect, setRedirect] = useState(false);
+
+
 
     /*******************************
      * END :: STATE INITIALIZATION *
@@ -121,6 +128,11 @@ const CreateRecipeContainer = () => {
      ********************************************/
 
     const handlePreparationStepInputChange = (event, inputField, index) => {
+
+        console.log(event.target.value);
+        console.log(inputField);
+        console.log(index);
+
         let arrayCopy = [...preparationInstructions];
         arrayCopy[index] = event.target.value;
         setPreparationInstructions(arrayCopy);
@@ -145,9 +157,26 @@ const CreateRecipeContainer = () => {
     const handleFormSubmit = async (event) => {
         event.preventDefault();
 
-        fields.mainImage = mainImage;
+        console.log(fields);
 
-        const recipe = await dispatch(createRecipeAction(fields));
+        fields.category = {
+            sys: {
+                type: "Link",
+                linkType: "Entry",
+                id: fields.category
+            }
+        }
+
+        fields.preparationTime = parseInt(fields.preparationTime);
+        fields.cookingTime = parseInt(fields.cookingTime);
+        fields.serves = parseInt(fields.serves);
+
+        // Storing the instructions array as a '&&' delimited string.
+        fields.preparationInstructions = preparationInstructions.join('&&');
+
+        console.log(fields);
+
+        const recipe = await dispatch(createRecipeAction(fields, mainImage));
 
         console.log(recipe);
 
@@ -252,7 +281,7 @@ const CreateRecipeContainer = () => {
                                         fieldError={fieldErrors.cookingTime}
                                         isMultiLine={false}
                                     />
-
+{/* 
                                     <TextFieldInput
                                         gridItemSize={3}
                                         fieldName="difficulty"
@@ -261,7 +290,28 @@ const CreateRecipeContainer = () => {
                                         handleFieldChange={handleFieldChange}
                                         fieldError={fieldErrors.difficulty}
                                         isMultiLine={false}
-                                    />
+                                    /> */}
+
+                                    <Grid item xs={3}>
+                                        <FormControl variant="outlined" fullWidth margin="normal">
+                                            <InputLabel id="recipeDifficultyLabel">
+                                                Difficulty
+                                            </InputLabel>
+                                            <Select
+                                                labelId="recipeDifficultyLabel"
+                                                id="difficulty"
+                                                value={fields.difficulty}
+                                                name="difficulty"
+                                                onChange={handleFieldChange}
+                                                labelWidth={60}
+                                            >
+                                                <MenuItem value="Easy">Easy</MenuItem>
+                                                <MenuItem value="Medium">Medium</MenuItem>
+                                                <MenuItem value="Hard">Hard</MenuItem>
+                                    
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
 
                                     <TextFieldInput
                                         gridItemSize={3}

@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { hydrate, render } from "react-dom";
 import App from "./App";
 import {Auth0Provider} from "./utils/auth0";
 import history from "./utils/history";
@@ -9,13 +9,21 @@ import rootReducer from './reducers';
 import {Provider} from 'react-redux';
 import thunk from "redux-thunk";
 
+const preloadedState = window.__PRELOADED_STATE__;
+delete window.__PRELOADED_STATE__;
+
 const store = createStore(
     rootReducer,
+    preloadedState || {},
     compose(
         applyMiddleware(thunk),
         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     )
 );
+
+window.snapSaveState = () => ({
+    __PRELOADED_STATE__: store.getState()
+});
 
 const onRedirectCallback = appState => {
     history.push(
@@ -25,7 +33,9 @@ const onRedirectCallback = appState => {
     );
 };
 
-ReactDOM.render(
+const rootElement = document.getElementById("root");
+
+const appRender = (
     <Auth0Provider
         domain={process.env.REACT_APP_AUTH0_DOMAIN}
         client_id={process.env.REACT_APP_AUTH0_CLIENT_ID}
@@ -35,6 +45,14 @@ ReactDOM.render(
         <Provider store={store}>
             <App/>
         </Provider>
-    </Auth0Provider>,
-    document.getElementById("root")
+    </Auth0Provider>
 );
+
+if (rootElement.hasChildNodes()) {
+
+console.log('hello world...');
+
+  hydrate(appRender, rootElement);
+} else {
+  render(appRender, rootElement);
+}
