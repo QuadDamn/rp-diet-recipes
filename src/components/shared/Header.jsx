@@ -1,7 +1,7 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, memo} from 'react';
 import {useAuth0} from "../../utils/auth0";
 
-const Header = () => {
+const Header = memo(() => {
     const {isAuthenticated, loginWithRedirect, logout} = useAuth0();
 
     return (
@@ -50,6 +50,6 @@ const Header = () => {
             </div>
         </header>
     );
-};
+});
 
 export default Header;

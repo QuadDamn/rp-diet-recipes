@@ -14,7 +14,7 @@ export async function createEntry(contentType, data, imageData) {
         // Only want to upload an image if the content type is a recipe.  No other content type needs an image upload at this time.
         // The profile picture upload for a user goes to Auth0.
         if (contentType === 'recipe') {
-            const assetData = await assestUploadAndCreate(contentType, 'Image', data.fields.title, imageData);
+            const assetData = await assestUploadAndCreate(contentType, 'Image', data.title, imageData);
 
             // The asset has now been uploaded and created at this point.
             // Now we need to link it with the new entry we are creating below.
@@ -31,7 +31,11 @@ export async function createEntry(contentType, data, imageData) {
         const entry = await environment.createEntry(contentType, localeObject);
         await entry.publish();
     
-        return removeLocaleFromObjectData(entry);
+        const noLocaleEntry = removeLocaleFromObjectData(entry);
+
+        console.log(noLocaleEntry);
+
+        return noLocaleEntry;
     } catch (error) {
         throw error.message;
     }
@@ -80,8 +84,10 @@ function addLocaleToObjectData(data) {
 }
 
 function removeLocaleFromObjectData(data) {
-    const noLocaleObject = {};
-    noLocaleObject['fields'] = {};
+    const noLocaleObject = {
+        ...data,
+        fields: {}
+    }
 
     for (let [key] of Object.entries(data.fields)) {
         noLocaleObject.fields[key] = data.fields[key]['en-US'];

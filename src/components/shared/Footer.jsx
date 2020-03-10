@@ -1,6 +1,6 @@
-import React from "react";
+import React, {memo} from "react";
 
-const Footer = () => {
+const Footer = memo(() => {
     return (
         <footer className="foot" role="contentinfo">
             <div className="wrap clearfix">
@@ -51,6 +51,6 @@ const Footer = () => {
             </div>
         </footer>
     );
-};
+});
 
 export default Footer;

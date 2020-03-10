@@ -7,9 +7,6 @@ const useFormFields = (initialState) => {
     return [
         fields,
         (event, arrayPosition) => {
-
-            console.log(event);
-
             setValues({
                 ...fields,
                 [event.target.name]: event.target.value

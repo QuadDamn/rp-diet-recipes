@@ -38,13 +38,32 @@ const recipes = (state = {
                     error: action.error,
                 },
             };
-
         case ACTIONS.CREATE_RECIPE:
             return {
-
+                ...state,
+                recipes: {
+                    ...state.recipes,
+                    loading: true,
+                }
             }
-
-
+        case ACTIONS.CREATE_RECIPE_SUCCESS:
+            return {
+                ...state,
+                recipes: {
+                    total: state.recipes.total + 1,
+                    data: [...state.recipes.data, action.recipe]
+                }
+            }
+        case ACTIONS.CREATE_RECIPE_FAILURE: {
+            return {
+                ...state,
+                recipes: {
+                    ...state.recipes,
+                    loading: false,
+                    error: action.error,
+                },
+            }
+        }
         default:
             return state;
     }

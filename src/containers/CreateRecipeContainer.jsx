@@ -70,8 +70,6 @@ const CreateRecipeContainer = () => {
 
     const [redirect, setRedirect] = useState(false);
 
-
-
     /*******************************
      * END :: STATE INITIALIZATION *
      ******************************/
@@ -128,11 +126,6 @@ const CreateRecipeContainer = () => {
      ********************************************/
 
     const handlePreparationStepInputChange = (event, inputField, index) => {
-
-        console.log(event.target.value);
-        console.log(inputField);
-        console.log(index);
-
         let arrayCopy = [...preparationInstructions];
         arrayCopy[index] = event.target.value;
         setPreparationInstructions(arrayCopy);
@@ -174,14 +167,25 @@ const CreateRecipeContainer = () => {
         // Storing the instructions array as a '&&' delimited string.
         fields.preparationInstructions = preparationInstructions.join('&&');
 
-        console.log(fields);
+        try {
+            const recipeCreateResponse = await dispatch(createRecipeAction(fields, mainImage));
 
-        const recipe = await dispatch(createRecipeAction(fields, mainImage));
+            console.log(recipeCreateResponse);
 
-        console.log(recipe);
+            const recipe = recipeCreateResponse.recipe;
 
-        // Redirect the user to the newly created recipe page upon success.
-        // setRedirect(response.status === 200 ? '/new-account' : '/disqualified');
+            console.log('logging recipe...');
+            console.log(recipe);
+
+            const titleForUrl = recipe.fields.title.replace(/\s+/g, '-').toLowerCase();
+
+            // Redirect the user to the newly created recipe page upon success.
+            setRedirect(`/recipe/${recipe.sys.id}/${titleForUrl}`);
+        } catch (error) {
+            console.log(error);
+            
+            // Show toast to let the user know there was an error.
+        }
     };
 
     if (!recipeCategoriesSelector.recipeCategories || recipeCategoriesSelector.recipeCategories.loading) {

@@ -9,6 +9,7 @@ import PrivateRoute from "./components/shared/PrivateRoute";
 import CreateRecipeContainer from "./containers/CreateRecipeContainer";
 import PageNotFoundError from "./components/PageNotFoundError";
 import Theme from "./components/shared/ThemeProvider";
+import RecipeViewContainer from "./containers/RecipeViewContainer";
 
 function App() {
     const {loading} = useAuth0();
@@ -28,10 +29,9 @@ function App() {
                     <Header/>
 
                     <Switch>
-                        <Route exact path="/">
-                            <HomeContainer/>
-                        </Route>
-                        <PrivateRoute path="/recipe/new" component={CreateRecipeContainer}/>
+                        <Route exact path="/" component={HomeContainer} />
+                        <Route path="/recipe/:recipeId/:recipeTitle" component={RecipeViewContainer} />
+                        <PrivateRoute path="/recipe/new" component={CreateRecipeContainer}/> 
                         <Route component={PageNotFoundError} />
                     </Switch>
 
