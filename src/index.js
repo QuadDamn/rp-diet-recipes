@@ -3,10 +3,6 @@ import { hydrate, render } from 'react-dom';
 import App from './App';
 import { Auth0Provider } from './utils/auth0';
 import history from './utils/history';
-import { createStore, applyMiddleware, compose } from 'redux';
-import rootReducer from './reducers';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
 
 import './assets/css/style.css';
 import './assets/css/icons.css';
@@ -15,22 +11,6 @@ import './assets/css/icons.css';
 
 // Error logging platform initialization.
 // Sentry.init({dsn: process.env.REACT_APP_SENTRY_DSN});
-
-const preloadedState = window.__PRELOADED_STATE__;
-delete window.__PRELOADED_STATE__;
-
-const store = createStore(
-  rootReducer,
-  preloadedState || {},
-  compose(
-    applyMiddleware(thunk),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
-);
-
-window.snapSaveState = () => ({
-  __PRELOADED_STATE__: store.getState(),
-});
 
 const onRedirectCallback = appState => {
   history.push(
@@ -49,9 +29,7 @@ const appRender = (
     redirect_uri={window.location.origin}
     onRedirectCallback={onRedirectCallback}
   >
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <App />
   </Auth0Provider>
 );
 

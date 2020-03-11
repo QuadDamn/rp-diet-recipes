@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchRecipeCategoriesAction } from '../actions/recipeCategories';
 import { Redirect } from 'react-router-dom';
 import { useFormFields, useFormFieldErrors } from '../utils/customHooks';
 import IngredientList from '../components/createRecipe/IngredientList';
@@ -9,6 +7,8 @@ import TextFieldInput from '../components/createRecipe/TextFieldInput';
 import PreparationStepList from '../components/createRecipe/PreparationStepList';
 import ImageUploader from '../components/shared/ImageUploader';
 import { useAuth0 } from '../utils/auth0';
+import { createEntry } from '../utils/contentfulManagement';
+import { getEntriesByContentType } from '../utils/contentfulDelivery';
 
 import {
   Button,
@@ -18,7 +18,6 @@ import {
   FormControl,
   Select,
 } from '@material-ui/core';
-import { createRecipeAction } from '../actions/recipes';
 
 const CreateRecipeContainer = () => {
   /*********************************
@@ -26,6 +25,7 @@ const CreateRecipeContainer = () => {
    ********************************/
 
   const { user } = useAuth0();
+  const [recipeCategories, setRecipeCategories] = useState([]);
 
   const [fields, handleFieldChange] = useFormFields({
     authorUserId: user.sub, // User ID coming from Auth0 logged in user.
@@ -70,22 +70,21 @@ const CreateRecipeContainer = () => {
    * END :: STATE INITIALIZATION *
    ******************************/
 
-  /********************************
-   * START :: REDUX DATA FETCHING *
-   *******************************/
-
-  const recipeCategoriesSelector = useSelector(state => state.recipeCategories);
-  const dispatch = useDispatch();
+  /**************************
+   * START :: DATA FETCHING *
+   *************************/
 
   useEffect(() => {
-    if (recipeCategoriesSelector.recipeCategories.data.length === 0) {
-      dispatch(fetchRecipeCategoriesAction());
-    }
+    const loadInitialData = async () => {
+      setRecipeCategories(await getEntriesByContentType('recipeCategories'));
+    };
+
+    loadInitialData();
   }, []);
 
-  /******************************
-   * END :: REDUX DATA FETCHING *
-   *****************************/
+  /************************
+   * END :: DATA FETCHING *
+   ***********************/
 
   /********************************
    * START :: INGREDIENT HANDLERS *
@@ -164,23 +163,16 @@ const CreateRecipeContainer = () => {
     fields.preparationInstructions = preparationInstructions.join('&&');
 
     try {
-      const recipeCreateResponse = await dispatch(
-        createRecipeAction(fields, mainImage)
-      );
+      const createdRecipe = createEntry('recipe', fields, mainImage);
 
-      console.log(recipeCreateResponse);
+      console.log(createdRecipe);
 
-      const recipe = recipeCreateResponse.recipe;
-
-      console.log('logging recipe...');
-      console.log(recipe);
-
-      const titleForUrl = recipe.fields.title
+      const titleForUrl = createdRecipe.fields.title
         .replace(/\s+/g, '-')
         .toLowerCase();
 
       // Redirect the user to the newly created recipe page upon success.
-      setRedirect(`/recipe/${recipe.sys.id}/${titleForUrl}`);
+      setRedirect(`/recipe/${createdRecipe.sys.id}/${titleForUrl}`);
     } catch (error) {
       console.log(error);
 
@@ -189,8 +181,8 @@ const CreateRecipeContainer = () => {
   };
 
   if (
-    !recipeCategoriesSelector.recipeCategories ||
-    recipeCategoriesSelector.recipeCategories.loading
+    !Array.isArray(recipeCategories.items) ||
+    !recipeCategories.items.length
   ) {
     return (
       <div className="preloader">
@@ -251,15 +243,13 @@ const CreateRecipeContainer = () => {
                         onChange={handleFieldChange}
                         labelWidth={65}
                       >
-                        {recipeCategoriesSelector.recipeCategories.data.map(
-                          (category, index) => {
-                            return (
-                              <MenuItem key={index} value={category.sys.id}>
-                                {category.fields.name}
-                              </MenuItem>
-                            );
-                          }
-                        )}
+                        {recipeCategories.items.map((category, index) => {
+                          return (
+                            <MenuItem key={index} value={category.sys.id}>
+                              {category.fields.name}
+                            </MenuItem>
+                          );
+                        })}
                       </Select>
                     </FormControl>
                   </Grid>

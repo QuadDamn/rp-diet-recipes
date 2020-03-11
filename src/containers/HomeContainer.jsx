@@ -36,6 +36,8 @@ const HomeContainer = () => {
       element.scrollHeight - element.scrollTop === element.clientHeight &&
       recipes.total > recipes.items.length
     ) {
+      setLoadingMoreRecipes(true);
+
       const nextRecipeOffset = currentRecipeCount + RECIPE_FETCH_LIMIT;
 
       // Doing this because if you choose a LIMIT over the TOTAL, then Contentful just
@@ -56,6 +58,7 @@ const HomeContainer = () => {
         items: [...recipes.items, ...moreRecipes.items],
       });
       setCurrentRecipeCount(nextRecipeOffset);
+      setLoadingMoreRecipes(false);
     }
   };
 
