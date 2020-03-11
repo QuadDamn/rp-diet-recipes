@@ -1,11 +1,14 @@
 import React from 'react';
 
 const RecipeCategoryBlock = (categories) => {
+
+    console.log(categories)
+
     return (
         <div className="widget">
             <h3>Recipe Categories</h3>
             <ul className="boxed">
-                {categories.data.map((category, index) => {
+                {categories.items.map((category, index) => {
                     const boxShade = findBoxShade(index);
 
                     return (

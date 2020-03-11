@@ -1,6 +1,6 @@
-import React, {memo} from 'react';
+import React from 'react';
 
-const RecipeBlock = memo(({sys, fields}) => {
+const RecipeBlock = ({sys, fields}) => {
     const titleForUrl = fields.title.replace(/\s+/g, '-').toLowerCase();
 
     return (
@@ -29,6 +29,6 @@ const RecipeBlock = memo(({sys, fields}) => {
             </div>
         </div>
     )
-});
+};
 
 export default RecipeBlock;

@@ -559,8 +559,6 @@ div.selector, div.checker, div.button, div.radio, div.uploader {display: -moz-in
 div.selector:focus, div.checker:focus, div.button:focus, div.radio:focus, div.uploader:focus {outline: 0; }
 div.selector, div.selector *, div.radio, div.radio *, div.checker, div.checker *, div.uploader, div.uploader *, div.button, div.button * {margin: 0;padding: 0; }
 
-.highContrastDetect {background: url("../images/bg-input.png") repeat-x 0 0;width: 0px;height: 0px; }
-
 /* Input & Textarea */
 /*input.uniform-input,select.uniform-multiselect,textarea.uniform 							{padding:9px 10px;border:1px solid #ddd;color:#999;}*/
 /*input.uniform-input.active,select.uniform-multiselect.active,textarea.uniform.active,*/

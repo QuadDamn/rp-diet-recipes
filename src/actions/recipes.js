@@ -52,7 +52,7 @@ const createRecipeFailure = (error) => {
     }
 };
 
-export function fetchRecipesAction(skip, limit = RECIPE_FETCH_LIMIT) {
+export function fetchRecipesAction(skip, limit = 12) {
     return async (dispatch) => {
         dispatch(fetchRecipes());
 

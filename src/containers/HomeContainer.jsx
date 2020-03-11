@@ -1,37 +1,57 @@
 import React, {useEffect, useState, Fragment} from 'react';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {fetchRecipesAction, RECIPE_FETCH_LIMIT} from '../actions/recipes';
+import {fetchRecipesAction} from '../actions/recipes';
 import {fetchRecipeCategoriesAction} from "../actions/recipeCategories";
 import RecipeBlock from "../components/shared/RecipeBlock";
 import RecipeCategoryBlock from "../components/home/RecipeCategoryBlock";
 
+import { getEntriesByContentType } from '../utils/contentfulDelivery';
+
+const RECIPE_FETCH_LIMIT = 12;
+
 const HomeContainer = () => {
     const [currentRecipeCount, setCurrentRecipeCount] = useState(0);
-
-    const recipesSelector = useSelector(state => state.recipes, shallowEqual);
-    const recipeCategoriesSelector = useSelector(state => state.recipeCategories);
-    const dispatch = useDispatch();
+    const [loadingMoreRecipes, setLoadingMoreRecipes] = useState(false);
+    const [recipes, setRecipes] = useState([]);
+    const [recipeCategories, setRecipeCategories] = useState([]);
 
     useEffect(() => {
-        dispatch(fetchRecipesAction());
-        dispatch(fetchRecipeCategoriesAction());
-    }, [dispatch]);
+        const loadInitialData = async () => {
+            setRecipes(await getEntriesByContentType('recipe', { skip: 0, limit: RECIPE_FETCH_LIMIT }));
+            setRecipeCategories(await getEntriesByContentType('recipeCategories'));
+        }
+
+        loadInitialData();
+    }, []);
 
     const handleScroll = async (event) => {
         const element = event.target;
 
-        if (element.scrollHeight - element.scrollTop === element.clientHeight && recipesSelector.recipes.total > recipesSelector.recipes.data.length) {
+        if (element.scrollHeight - element.scrollTop === element.clientHeight && recipes.total > recipes.items.length) {
             const nextRecipeOffset = currentRecipeCount + RECIPE_FETCH_LIMIT;
 
             // Doing this because if you choose a LIMIT over the TOTAL, then Contentful just starts back at the beginning.  It doesn't respect a LIMIT up to the TOTAL.
-            const limitOverride = ((recipesSelector.recipes.data.length + RECIPE_FETCH_LIMIT) > recipesSelector.recipes.total) ? recipesSelector.recipes.total - recipesSelector.recipes.data.length : RECIPE_FETCH_LIMIT;
+            const limitOverride = ((recipes.items.length + RECIPE_FETCH_LIMIT) > recipes.total) ? recipes.total - recipes.items.length : RECIPE_FETCH_LIMIT;
 
-            await dispatch(fetchRecipesAction(nextRecipeOffset, limitOverride));
+            const moreRecipes = await getEntriesByContentType('recipe', { skip: nextRecipeOffset, limit: limitOverride });
+
+            setRecipes({
+                ...recipes,
+                total: moreRecipes.total,
+                items: [...recipes.items, ...moreRecipes.items]
+            });
             setCurrentRecipeCount(nextRecipeOffset)
         }
     };
 
-    if (!recipeCategoriesSelector.recipeCategories || recipeCategoriesSelector.recipeCategories.loading) {
+    console.log(recipes);
+    console.log(recipeCategories);
+
+    // return (
+    //     <div>Hello World</div>
+    // );
+
+    if (!Array.isArray(recipes.items) || !recipes.items.length || !Array.isArray(recipeCategories.items) || !recipeCategories.items.length) {
         return (
             <div className="preloader">
                 <div className="spinner"/>
@@ -114,7 +134,7 @@ const HomeContainer = () => {
                                  onScroll={handleScroll}
                                  style={{height: "500px", overflow: "scroll"}}
                             >
-                                {recipesSelector.recipes.data.length !== 0 && !recipesSelector.recipes.loading && recipesSelector.recipes.data.map((recipe, index) => {
+                                {recipes.items.map((recipe, index) => {
                                     return (
                                         <Fragment key={index}>
                                             <RecipeBlock {...recipe} />
@@ -122,13 +142,13 @@ const HomeContainer = () => {
                                     );
                                 })}
 
-                                {recipesSelector.recipes.loading && (
+                                {loadingMoreRecipes && (
                                     <div className="spinner-smaller"/>
                                 )}
                             </div>
 
                             <div className="quicklinks" style={{marginTop: "20px"}}>
-                                {(!recipesSelector.recipes.loading && recipesSelector.recipes.total > recipesSelector.recipes.data.length) && (
+                                {!loadingMoreRecipes && (recipes.total > recipes.items.length) && (
                                     <a href="#!" className="button">Scroll Down To Load More</a>
                                 )}
                             </div>
@@ -136,7 +156,7 @@ const HomeContainer = () => {
                     </section>
 
                     <aside className="sidebar one-fourth">
-                        <RecipeCategoryBlock {...recipeCategoriesSelector.recipeCategories} />
+                        <RecipeCategoryBlock {...recipeCategories} />
 
                         <div className="widget members">
                             <h3>Our members</h3>

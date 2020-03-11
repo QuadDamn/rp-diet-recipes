@@ -7,6 +7,10 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import rootReducer from './reducers';
 import {Provider} from 'react-redux';
 import thunk from "redux-thunk";
+
+import "./assets/css/style.css";
+import "./assets/css/icons.css";
+
 // import * as Sentry from '@sentry/browser';
 
 // Error logging platform initialization.
