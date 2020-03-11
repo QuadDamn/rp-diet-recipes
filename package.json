@@ -1,62 +1,69 @@
 {
-  "name": "rp-diet-recipes-2",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@auth0/auth0-spa-js": "^1.6.4",
-    "@hookstate/core": "^1.5.2",
-    "@material-ui/core": "^4.9.4",
-    "@material-ui/lab": "^4.0.0-alpha.44",
-    "@material-ui/styles": "^4.9.0",
-    "@sentry/browser": "^5.13.2",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "cloudinary-react": "^1.3.2",
-    "contentful": "^7.14.0",
-    "contentful-management": "^5.13.0",
-    "prop-types": "^15.7.2",
-    "react": "^16.12.0",
-    "react-content-loader": "^5.0.2",
-    "react-dom": "^16.12.0",
-    "react-flip-move": "^3.0.4",
-    "react-helmet": "^5.2.1",
-    "react-redux": "^7.2.0",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0",
-    "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "postbuild": "react-snap",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@storybook/addon-actions": "^5.3.14",
-    "@storybook/addon-links": "^5.3.14",
-    "@storybook/addons": "^5.3.14",
-    "@storybook/preset-create-react-app": "^2.0.0",
-    "@storybook/react": "^5.3.14",
-    "react-snap": "^1.23.0"
-  }
+ "name": "rp-diet-recipes-2",
+ "version": "0.1.0",
+ "private": true,
+ "dependencies": {
+  "@auth0/auth0-spa-js": "^1.6.4",
+  "@hookstate/core": "^1.5.2",
+  "@material-ui/core": "^4.9.4",
+  "@material-ui/lab": "^4.0.0-alpha.44",
+  "@material-ui/styles": "^4.9.0",
+  "@sentry/browser": "^5.13.2",
+  "@testing-library/jest-dom": "^4.2.4",
+  "@testing-library/react": "^9.3.2",
+  "@testing-library/user-event": "^7.1.2",
+  "cloudinary-react": "^1.3.2",
+  "contentful": "^7.14.0",
+  "contentful-management": "^5.13.0",
+  "prettier": "^1.19.1",
+  "prop-types": "^15.7.2",
+  "react": "^16.12.0",
+  "react-content-loader": "^5.0.2",
+  "react-dom": "^16.12.0",
+  "react-flip-move": "^3.0.4",
+  "react-helmet": "^5.2.1",
+  "react-redux": "^7.2.0",
+  "react-router-dom": "^5.1.2",
+  "react-scripts": "3.4.0",
+  "redux": "^4.0.5",
+  "redux-thunk": "^2.3.0"
+ },
+ "scripts": {
+  "start": "react-scripts start",
+  "build": "react-scripts build",
+  "postbuild": "react-snap",
+  "test": "react-scripts test",
+  "eject": "react-scripts eject",
+  "storybook": "start-storybook -p 9009 -s public",
+  "build-storybook": "build-storybook -s public"
+ },
+ "eslintConfig": {
+  "extends": "react-app"
+ },
+ "browserslist": {
+  "production": [
+   ">0.2%",
+   "not dead",
+   "not op_mini all"
+  ],
+  "development": [
+   "last 1 chrome version",
+   "last 1 firefox version",
+   "last 1 safari version"
+  ]
+ },
+ "devDependencies": {
+  "@storybook/addon-actions": "^5.3.14",
+  "@storybook/addon-links": "^5.3.14",
+  "@storybook/addons": "^5.3.14",
+  "@storybook/preset-create-react-app": "^2.0.0",
+  "@storybook/react": "^5.3.14",
+  "react-snap": "^1.23.0"
+ },
+ "prettier": {
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "semi": true,
+  "singleQuote": true
+ }
 }

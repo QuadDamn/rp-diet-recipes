@@ -1,16 +1,18 @@
-import React, {useSelector} from 'react';
+import React, { useSelector } from 'react';
 
-const RecipeViewContainer = (props) => {
-    console.log(props.match.params);
+const RecipeViewContainer = props => {
+  console.log(props.match.params);
 
-    const recipeId = props.match.params.recipeId;
-    const recipeSelector = useSelector(state => (state.recipes.data.length > 0) ? state.recipes.data.find(recipe => recipe.sys.id === recipeId) : null);
+  const recipeId = props.match.params.recipeId;
+  const recipeSelector = useSelector(state =>
+    state.recipes.data.length > 0
+      ? state.recipes.data.find(recipe => recipe.sys.id === recipeId)
+      : null
+  );
 
-    console.log(recipeSelector);
+  console.log(recipeSelector);
 
-    return (
-        <div>Recipe View Container</div>
-    );
-}
+  return <div>Recipe View Container</div>;
+};
 
 export default RecipeViewContainer;

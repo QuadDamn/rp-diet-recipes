@@ -1,5 +1,6 @@
 import React, {Fragment, memo} from 'react';
 import {useAuth0} from "../../utils/auth0";
+import logo from '../../assets/images/ico/logo.png';
 
 const Header = memo(() => {
     const {isAuthenticated, loginWithRedirect, logout} = useAuth0();
@@ -7,7 +8,7 @@ const Header = memo(() => {
     return (
         <header className="head" role="banner">
             <div className="wrap clearfix">
-                <a href="/" title="SocialChef" className="logo"><img src="/images/ico/logo.png"
+                <a href="/" title="SocialChef" className="logo"><img src={logo}
                                                                      alt="SocialChef logo"/></a>
                 <nav className="user-nav" role="navigation">
                     <ul>

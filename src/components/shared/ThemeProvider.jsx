@@ -8,22 +8,18 @@ const SECONDARY_MAIN_COLOR = '#9e9e9e';
 const SECONDARY_CONTRAST_TEXT = '#fafafa';
 
 const theme = createMuiTheme({
-    palette: {
-        primary: {
-            main: PRIMARY_MAIN_COLOR,
-            contrastText: PRIMARY_CONTRAST_TEXT,
-        },
-        secondary: {
-            main: SECONDARY_MAIN_COLOR,
-            contrastText: SECONDARY_CONTRAST_TEXT
-        }
-    }
+  palette: {
+    primary: {
+      main: PRIMARY_MAIN_COLOR,
+      contrastText: PRIMARY_CONTRAST_TEXT,
+    },
+    secondary: {
+      main: SECONDARY_MAIN_COLOR,
+      contrastText: SECONDARY_CONTRAST_TEXT,
+    },
+  },
 });
 
 export default function Theme(props) {
-    return (
-        <ThemeProvider theme={theme}>
-            {props.children}
-        </ThemeProvider>
-    );
+  return <ThemeProvider theme={theme}>{props.children}</ThemeProvider>;
 }
